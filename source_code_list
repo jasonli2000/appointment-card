@@ -1,0 +1,39 @@
+R1ACNAD.m Diagnose Incomplete Clinic Addresses
+R1ACNLNK.m Bottom Links for Xerox Printing Project
+R1ACNPST.m Post Install Message
+R1ACNWKO.m Display Active Clinics at Your Facility
+R1ACNWKR.m Diagnostic for Xerox ADPAC's
+R1ACNWKS.m Bad Address Report #1,2,3,4 for Print Appt PostCard Proj
+R1ACNWKV.m - Clone of Don Donati's CSP ^ARHDEOS6 - Signout for transferring WP nodes from #612418.1 to #612418
+R1ACNWKW.m for Print Appt Post Card Setup Templates
+R1ACNWKX.m Display Individual Templates for Selected Boiler Plate
+R1ACNWKY.m Print Post Card Setup Templates
+R1ACNWKZ.m WP data in CSP
+R1ACNX2.m Display Individual Templates for Selected Boiler Plate
+R1ACPOST.m Install Routine ;April 22, 2011
+R1ACSCIC.m Clinic in CrossWalk file
+R1ACSCR1.m Xerox CrossWalk report for date entered
+R1ACSCRD.m Print Appointment Postcard Driver (1) ; Oct 7. 2007
+R1ACSPAR.m Check XEROX POSTCARD setup (parameters)
+R1ACSPUR.m Purge POST CARD Tracking file
+R1ACSSMU.m SCREENMAN utilities
+R1ACSUT1.m CrossWalk checker (valid fields)
+R1ACSUT2.m Utilities ;April 1, 2011
+R1ACSUTL.m XEROX POSTCARD application utilities
+R1ACSUUB.m Update Universal Box
+R1ACSX1.m Build transmission script and transmit
+R1ACSXR1.m Postcards Transmission Report
+R1SDRRM1.m PACKAGE/XEROX PRINTER; 12/03/2006
+R1SDRRM2.m RECALL REMINDER PACKAGE/XEROX PRINTER; 04/07/2009
+R1SDRRM.m ;;R1SDRR/MAH;RECALL REMINDER PACKAGE/XEROX PRINTER; 01/15/2008
+R1SDRRP.m ;;R1SDRR/MAH;RECALL REMINDER PACKAGE/XEROX PRINTER; 01/22/2008
+R1UTCSP0.m ;SFVAMC/DAD-Cache Server Pages (Login)
+R1UTCSP1.m ;SFVAMC/DAD-Cache Server Pages (Division)
+R1UTCSP2.m ;SFVAMC/DAD-Cache Server Pages (Logout)
+R1UTCSP3.m ;SFVAMC/DAD-Cache Server Pages (Change Verify Code)
+R1UTCSP4.m ;SFVAMC/DAD-Cache Server Pages (Option Context)
+R1UTCSP.m ;SFVAMC/DAD-Cache Server Pages (Simple Log in/out)
+R1UTCSPW.m ;SFVAMC/DAD-Cache Server Pages (Misc Utility)
+R1UTCSPX.m ;SFVAMC/DAD-Cache Server Pages (Misc Utility)
+R1UTCSPY.m ;SFVAMC/DAD-Cache Server Pages (Misc Utility)
+R1UTCSPZ.m ;SFVAMC/DAD-Cache Server Pages (Non-SAC Compliant)
