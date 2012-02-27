@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!version 3.0; Print Appointment PostCards; Build 1; April 2011>
+<html>
+
+<csp:class super="%CSP.Page,R1AC.Subclass" private="1" errorpage="r1acnlog.csp">
+
+<title>Print PostCard Cross Walk for VistA Scheduling Letters 3 V3.0</title>
+
+<head bgcolor='#f0f8ff' topmargin="0">
+<div id="container-header">
+</div>
+<table border="2" id="table1" cellspacing="0" cellpadding="6" width="811" bordercolor='BLACK'>
+
+<!-- ########## Application / page setup ########## -->
+
+<script type="text/javascript">
+function onChange() {
+document.forms['frmEditXeroxWalk3'].elements['cbxClinic'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk3.submit();
+return (true);}	
+</script>
+
+<script type="text/javascript">
+function lock() {
+var msg ='Another Person'
+alert(msg + ' is editing this entry!  Please try again later' )
+return (true);}
+</script>
+
+<script type="text/javascript">
+function modified() {
+document.body.style.cursor="wait";	
+document.forms['frmEditXeroxWalk3'].elements['edtMailStop'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtCPhone'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtMaPhone'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtFriendlyName'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtPhysLocation'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtPhysLocation2'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtPhysLocation3'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtAddrL1'].selectedIndex='1';
+document.forms['frmEditXeroxWalk3'].elements['edtAddrL2'].selectedIndex='1';
+return (true);}	
+</script>
+
+<script language="cache" runat="server">
+D DT^DICRW ;%=Date/Time
+D SETDUZ^R1UTCSPZ
+S ARHDROOT=$$GETROOT^R1UTCSPX("",1)
+D SETUP^R1UTCSPX($$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")),$$%PackageName_"."_$$%ClassName(0)) ; Setup environment
+D METATAGS^R1UTCSPY(.ARHDROOT,"",$$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ"))) ; Meta tags for timeout and no caching
+D STYLESHT^R1UTCSPW(.ARHDROOT) ; Style sheet to make the page look nice
+D SETFOCUS^R1UTCSPX(.ARHDROOT) ; Javascript to set focus to 1st form field
+D DISPLAY^R1UTCSPX(.ARHDROOT) ;  Output the above code to the page
+</script>
+
+<!-- ########## Logout and save code ########## -->
+
+<script language="cache" method="GetREG" arguments="ARHDFLD:%String" returntype="%String">
+N REG S REG=""
+S REG=$$GET1^DIQ(612418.5,1,7.9)
+Q $G(REG)
+</script>
+
+<script language="cache" runat="server">
+I $$GETREQ^R1UTCSPZ("cbxClinic")]"" D
+ .N ARHDATTR,DA,XXX
+ .S (ARHDATTR,DA,XXX)=""
+ .D SETDUZ^R1UTCSPZ
+ .S DA=$$GETREQ^R1UTCSPZ("cbxClinic",1)
+ .S ARHDATTR("name")="cbxClinic"
+ .S ARHDATTR("value")=DA
+ .D SET^R1UTCSPX("XXX",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ .S DA=$P(XXX(1),"value=",2)
+ .S DA=$P(DA," />") S DA=$P(DA,"""",2),DA=$P(DA,"""")
+ .Q
+ .;
+ I $$GETREQ^R1UTCSPZ("cbxClinic")]"" D
+ .N R1ACFLG,ARHDMSG,ARHDMSGS,DA,ARHDINDX,CIEN,R1ACNMG,XMTEXT,XMDUZ,XMSUB,XMY,R1ACCNT
+ .S (ARHDMSG,ARHDMSGS,DA,ARHDINDX,CIEN,R1ACNMG,XMTEXT,XMDUZ,XMSUB,XMY,R1ACCNT)=""
+ .S R1ACFLG=0
+ .S DA=$$GETREQ^R1UTCSPZ("cbxClinic",1)
+ .I ('$$GET1^DIQ(44,..GetCIEN(),3,"I")) S R1ACFLG=1 ;Institution field missing
+ .I R1ACFLG=1 D  ;Send E-mail to mail group in Parameter File & do popup box
+ ..S ARHDMSG="Addition of INSTITUTION link is required in selected Clinic"
+ ..D MSG^DIALOG("AE",.ARHDMSGS,70,0) ; Get FileMan error messages
+ ..S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)="" ;Add my msg to FM msg array
+ ..W !,"<script type=""text/javascript"">" ; JavaScript to display popup
+ ..W !,"alert("
+ ..S ARHDINDX=0 ; Build and format popup text
+ ..F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+ ...W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX)) ; Quote/escape text
+ ...W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");") ; Line break/end
+ ...Q
+ ..W !,"</","script>" ; Cannot have a closing script tag in a script
+ ..D CLEAN^DILF
+ ..S CIEN=$$GETREQ^R1UTCSPZ("cbxClinic",1)
+ ..S R1ACCNT=2
+ ..S XMTEXT(1)=$$GET1^DIQ(44,..GetCIEN(),.01,"E")_" is missing Institution Field setup." 
+ ..S XMTEXT(2)="Please use VistA 'Set up a Clinic [SDBUILD]' to complete."
+ .S R1ACNMG=$$GET1^DIQ(612418.5,1,.05,"E") I $G(R1ACNMG)']"" S R1ACNMG=$$GET1^DIQ(3.8,33,.01,"E") ;Mail group
+ .S XMY("G."_R1ACNMG)="",XMTEXT="XMTEXT(",XMSUB="PostCard CrossWalk Clinic Needs Further Setup" D SETDUZ^R1UTCSPZ I $G(DUZ)']"" S DUZ=.5
+ .S XMDUZ=DUZ
+ .I ($$GET1^DIQ(44,..GetCIEN(),.01,"E"))]"" D ^XMD S R1ACFLG=""
+ .Q
+ ;
+ I $$GETREQ^R1UTCSPZ("btnSave")]""  D  ;Add New Fields
+ . N ARHDATTR,ARHDFDA,ARHDIENS,ARHDMSG,ARHDMSGS,ARHDERR,ARHDINDX,ARHDIEN,DA,R1ACFLG,R1ACFLGZ,REF
+ . S (ARHDATTR,ARHDFDA,ARHDIENS,ARHDMSG,ARHDMSGS,ARHDERR,ARHDINDX,ARHDIEN,DA,R1ACFLG,R1ACFLGZ,REF)=""
+ . N XXX1,XXX2,XXX3,XXX4,XXX5,XXX6,XXX7,XXX8,XXX9
+ . S (XXX1,XXX2,XXX3,XXX4,XXX5,XXX6,XXX7,XXX8,XXX9)=""
+ . N MAIL,FNAME,CPHONE,MPHONE,PLOC,PLOC2,PLOC3,ADDR1,ADDR2
+ . S (MAIL,FNAME,CPHONE,MPHONE,PLOC,PLOC2,PLOC3,ADDR1,ADDR2)=""
+ . S R1ACFLG=0
+ . I '$$GET1^DIQ(44,..GetCIEN(),3,"I") S R1ACFLGZ=1
+ . I '$$GET1^DIQ(44,..GetCIEN(),3.5,"I") S R1ACFLGZ=1
+ . Q:R1ACFLG=1
+ . S ARHDERR=0
+ . S DA=$$GETREQ^R1UTCSPZ("cbxClinic",1)
+ . S R1ACFLG=1 ;initialize edit flag
+ . I '$D(^DIZ(612418,DA,0)) S R1ACFLG=0 D  ;Setup New Clinic
+ .. S MAIL="",MAIL=$$GETREQ^R1UTCSPZ("edtMailStop",1)
+ .. S FNAME="",FNAME=$$GETREQ^R1UTCSPZ("edtFriendlyName",1)
+ .. S CPHONE="",CPHONE=$$GETREQ^R1UTCSPZ("edtCPhone",1)
+ .. S MPHONE="",MPHONE=$$GETREQ^R1UTCSPZ("edtMaPhone",1)
+ .. S PLOC="",PLOC=$$GETREQ^R1UTCSPZ("edtPhysLocation",1)
+ .. S PLOC2="",PLOC2=$$GETREQ^R1UTCSPZ("edtPhysLocation2",1)
+ .. S PLOC3="",PLOC3=$$GETREQ^R1UTCSPZ("edtPhysLocation3",1)
+ .. S ADDR1="",ADDR1=$$GETREQ^R1UTCSPZ("edtAddrL1",1)
+ .. S ADDR2="",ADDR2=$$GETREQ^R1UTCSPZ("edtAddrL2",1)
+ .. S ARHDIENS="?+"_DA_","
+ .. S ARHDFDA(612418,ARHDIENS,.01)=DA 
+ .. S ARHDFDA(612418,ARHDIENS,1)=$G(MAIL)
+ .. S ARHDFDA(612418,ARHDIENS,2)=$G(FNAME)
+ .. S ARHDFDA(612418,ARHDIENS,1.1)=$G(CPHONE)
+ .. S ARHDFDA(612418,ARHDIENS,1.5)=$G(MPHONE)
+ .. S ARHDFDA(612418,ARHDIENS,3)=$G(PLOC)
+ .. S ARHDFDA(612418,ARHDIENS,3.2)=$G(PLOC2)
+ .. S ARHDFDA(612418,ARHDIENS,3.4)=$G(PLOC3)
+ .. S ARHDFDA(612418,ARHDIENS,5)=$G(ADDR1)
+ .. S ARHDFDA(612418,ARHDIENS,6)=$G(ADDR2)
+ .. S ARHDIEN(DA)=DA
+ .. D UPDATE^DIE("","ARHDFDA","ARHDIEN")
+ . S (R1ACFLGZ,REF)=""
+ . I $P($G(^DIZ(612418,DA,0)),U)]"" S R1ACFLGZ=1
+ . I R1ACFLGZ=1 S REF=$NA(^DIZ(612418,DA,0)) D  ;Edit Previously setup clinic
+ ..D LOCK^DILF(REF) I $T D
+ ...S MAIL=$$GETREQ^R1UTCSPZ("edtMailStop",1)
+ ...S ARHDATTR("name")="edtMailStop"
+ ...S ARHDATTR("value")=MAIL
+ ...D SET^R1UTCSPX("XXX1",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S MAIL=$P(XXX1(1),"value=",2)
+ ...S MAIL=$P(MAIL," />") S MAIL=$P(MAIL,"""",2),MAIL=$P(MAIL,"""")
+ ...S ARHDFDA(612418,DA_",",1)=$G(MAIL)
+ ...I $G(MAIL)]" " D FILE^DIE("","ARHDFDA","")
+ ...S FNAME=$$GETREQ^R1UTCSPZ("edtFriendlyName",1)
+ ...S ARHDATTR("name")="edtFriendlyName"
+ ...S ARHDATTR("value")=FNAME
+ ...D SET^R1UTCSPX("XXX2",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S FNAME=$P(XXX2(1),"value=",2)
+ ...S FNAME=$P(FNAME," />") S FNAME=$P(FNAME,"""",2),FNAME=$P(FNAME,"""")
+ ...S ARHDFDA(612418,+DA_",",2)=$G(FNAME)
+ ...I $G(FNAME)]" " D FILE^DIE("","ARHDFDA","")
+ ...S PLOC=$$GETREQ^R1UTCSPZ("edtPhysLocation",1)
+ ...S ARHDATTR("name")="edtPhysLocation"
+ ...S ARHDATTR("value")=PLOC
+ ...D SET^R1UTCSPX("XXX3",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S PLOC=$P(XXX3(1),"value=",2)
+ ...S PLOC=$P(PLOC," />") S PLOC=$P(PLOC,"""",2),PLOC=$P(PLOC,"""")
+ ...S ARHDFDA(612418,+DA_",",3)=$G(PLOC)
+ ...I $G(PLOC)]" " D FILE^DIE("","ARHDFDA","")
+ ...S PLOC2=$$GETREQ^R1UTCSPZ("edtPhysLocation2",1)
+ ...S ARHDATTR("name")="edtPhysLocation2"
+ ...S ARHDATTR("value")=PLOC2
+ ...D SET^R1UTCSPX("XXX8",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S PLOC2=$P(XXX8(1),"value=",2)
+ ...S PLOC2=$P(PLOC2," />") S PLOC2=$P(PLOC2,"""",2),PLOC2=$P(PLOC2,"""")
+ ...S ARHDFDA(612418,+DA_",",3.2)=$G(PLOC2)
+ ...I $G(PLOC2)]" " D FILE^DIE("","ARHDFDA","")
+ ...S PLOC3=$$GETREQ^R1UTCSPZ("edtPhysLocation3",1)
+ ...S ARHDATTR("name")="edtPhysLocation3"
+ ...S ARHDATTR("value")=PLOC3
+ ...D SET^R1UTCSPX("XXX9",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S PLOC3=$P(XXX9(1),"value=",2)
+ ...S PLOC3=$P(PLOC3," />") S PLOC3=$P(PLOC3,"""",2),PLOC3=$P(PLOC3,"""")
+ ...S ARHDFDA(612418,+DA_",",3.4)=$G(PLOC3)
+ ...I $G(PLOC3)]" " D FILE^DIE("","ARHDFDA","")
+ ...S CPHONE=$$GETREQ^R1UTCSPZ("edtCPhone",1)
+ ...S ARHDATTR("name")="edtCPhone"
+ ...S ARHDATTR("value")=CPHONE
+ ...D SET^R1UTCSPX("XXX6",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S CPHONE=$P(XXX6(1),"value=",2)
+ ...S CPHONE=$P(CPHONE," />") S CPHONE=$P(CPHONE,"""",2),CPHONE=$P(CPHONE,"""")
+ ...S ARHDFDA(612418,+DA_",",1.1)=$G(CPHONE)
+ ...I $G(CPHONE)]" " D FILE^DIE("","ARHDFDA","")
+ ...S ADDR1=$$GETREQ^R1UTCSPZ("edtAddrL1",1)
+ ...S ARHDATTR("name")="edtAddrL1"
+ ...S ARHDATTR("value")=ADDR1
+ ...D SET^R1UTCSPX("XXX4",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S ADDR1=$P(XXX4(1),"value=",2)
+ ...S ADDR1=$P(ADDR1," />") S ADDR1=$P(ADDR1,"""",2),ADDR1=$P(ADDR1,"""")
+ ...S ARHDFDA(612418,+DA_",",5)=$G(ADDR1)
+ ...I $G(ADDR1)]" " D FILE^DIE("","ARHDFDA","")
+ ...S MPHONE=$$GETREQ^R1UTCSPZ("edtMaPhone",1)
+ ...S ARHDATTR("name")="edtMaPhone"
+ ...S ARHDATTR("value")=MPHONE
+ ...D SET^R1UTCSPX("XXX7",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S MPHONE=$P(XXX7(1),"value=",2)
+ ...S MPHONE=$P(MPHONE," />") S MPHONE=$P(MPHONE,"""",2),MPHONE=$P(MPHONE,"""")
+ ...S ARHDFDA(612418,+DA_",",1.5)=$G(MPHONE)
+ ...I $G(MPHONE)]" " D FILE^DIE("","ARHDFDA","")
+ ...S ADDR2=$$GETREQ^R1UTCSPZ("edtAddrL2",1)
+ ...S ARHDATTR("name")="edtAddrL2"
+ ...S ARHDATTR("value")=ADDR2
+ ...D SET^R1UTCSPX("XXX5",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+ ...S ADDR2=$P(XXX5(1),"value=",2)
+ ...S ADDR2=$P(ADDR2," />") S ADDR2=$P(ADDR2,"""",2),ADDR2=$P(ADDR2,"""")
+ ...I $G(ADDR2)]""&($G(ADDR2)["MCCLELLAN AIR FORCE BASE") S ADDR2="MCCLELLAN PARK, CA 95652" ;MTZ Modification
+ ...S ARHDFDA(612418,+DA_",",6)=$G(ADDR2)
+ ...I $G(ADDR2)]" " D FILE^DIE("","ARHDFDA","")
+ ...L -^DIZ(612418,DA,0)
+ ...D:R1ACFLGZ=1
+ ....;*** Got lock, attempt save
+ .... K ARHDMSG
+ .... S FNAME=$$GETREQ^R1UTCSPZ("edtFriendlyName",1)
+ .... S ARHDMSG=FNAME_" Changes have "_$S($G(ARHDERR)>0:"NOT ",1:"")_"been saved."
+ .... D MSG^DIALOG("AE",.ARHDMSGS,70,0) ; Get FileMan error messages
+ .... D CLEAN^DILF
+ .... Q
+ ..E  D
+ ...; *** No lock, no save
+ ...S ARHDMSG="Your DEFAULT Post Card Type Data has ***NOT*** been submitted."
+ ...Q
+ .. S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)="" ; Add my msg to FM msg array
+ .. W !,"<script type=""text/javascript"">" ; JavaScript to display popup
+ .. W !,"alert("
+ .. S ARHDINDX=0 ; Build and format popup text
+ .. F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+ ... W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX)) ; Quote/escape text
+ ... W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");") ; Line break/end
+ ... Q
+ .. W !,"</","script>" ; Cannot have a closing script tag in a script
+ .. Q
+ . Q
+ ; *** User clicked the "Logout" button ;*****
+ I $$GETREQ^R1UTCSPZ("btnLogout")]"" D
+ . D LOGOUT^R1UTCSP2
+ . W !,"<script type=""text/javascript"">" ;JavaScript to redirect
+ . W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+ . W !,"</","script>" ; Cannot have a closing script tag in a script
+ . Q
+  </script>
+ 
+<!-- ########## Event handlers ########## -->
+
+<!--script language="cache" method="OnTimeout" arguments="" returntype="">
+  ; %session.EventClass must be initialized to the class name that
+  ; contains the event handlers in order for the events to be fired
+  ; off, e.g., SET %session.EventClass=$$%PackageName_"."_$$%ClassName(0)
+  D LOGOUT^R1UTCSP2 ; Clean-up session, end session, and logout
+  W !,"<script type=""text/javascript"">" ;JavaScript to redirect
+  W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+  W !,"</","script>" ; Cannot have a closing script tag in a script
+  </script>
+  
+  <script language="cache" method="OnEndSession" arguments="" returntype="">
+  ; %session.EventClass must be initialized to the class name that
+  ; contains the event handlers in order for the events to be fired
+  ; off, e.g., SET %session.EventClass=$$%PackageName_"."_$$%ClassName(0)
+  D LOGOUT^R1UTCSP2 ; Clean-up session, end session, and logout
+  </script-->
+
+  
+<!-- ########## Application methods ########## -->
+
+<script language="cache" method="GetDUZ" arguments="" returntype="%String">
+  ; *** Get and return the user's DUZ (set in LOGIN^R1UTCSP)
+  Q +$$GETSES^R1UTCSPZ(DUZ)
+</script>
+
+
+<script language="cache" method="GetSTA1" arguments="ARHDFLD:%String" returntype="%String">
+   ; *** Get and return the user's DUZ (set in LOGIN^R1UTCSP)
+   N STA,STAT
+   S (STA,STAT)=""
+   D SETDUZ^R1UTCSPZ
+   S STAT=$G(DUZ(2)) S STA=$$GET1^DIQ(4,$G(STAT),.01)
+   Q $G(STA)
+</script>
+
+<script language="cache" method="GetCIEN" arguments="" returntype="%String">
+  ; *** Get and return IRMS PostCard CrossWalk IEN
+  Q $$GETREQ^R1UTCSPZ("cbxClinic")
+</script>
+
+<script language="cache" method="edtValue" arguments="" returntype="%String">
+  ; *** Get and return IRMS PostCard CrossWalk IEN
+  Q $G(%session.Data("edtValue"))="1"
+</script>
+
+<script language="cache" method="GetClinics" arguments="" returntype="%String" > 
+  ; *** Build a set of <option> tags for a pointer field 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  W !,"Clinic Name:  ",..OptionTag2("@","---Blank---","") ; Blank option for deletion 
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxClinic","")
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(44,"","@;.01","P","","","","","I ($P(^(0),""^"",3)=""C""),$S('$D(^(""I"")):1,+^(""I"")=0:1,+^(""I"")>DT:1,+$P(^(""I""),U,2)'>DT&(+$P(^(""I""),U,2)'=0):1,1:0)","","") ;Screen out Inactive Clinics
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1) ; Pointer internal value (IEN)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)  ; Pointer external value)
+  .W !,..OptionTag2(ARHDINT,ARHDEXT,ARHDDEF) ; Write an option tag
+  .Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script> 
+
+<script language="cache" method="OptionTag2" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  ; *** Output an option tag
+  N ARHDOPT
+  S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_"""" ; Value is returned when form is submitted
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected""" ; Preselect default value
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>" ; Escape special [X]HTML characters
+  Q ARHDOPT
+</script>
+
+<script language="cache" method="GetValue1" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  Q $$GET1^DIQ(612418,..GetCIEN(),1)
+</script>
+
+ 
+<script language="cache" method="GetValue2" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  Q $$GET1^DIQ(612418,..GetCIEN(),2)
+</script>
+
+<script language="cache" method="GetValue3" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  Q $$GET1^DIQ(612418,..GetCIEN(),3)
+  </script>
+ 
+ <script language="cache" method="GetValue4" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  Q $$GET1^DIQ(612418,..GetCIEN(),1.1)
+</script>
+
+  <script language="cache" method="GetValue5" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  N ARHDDEF,ARHDEF,ARHDDMC
+  S (ARHDDEF,ARHDEF,ARHDDMC)=""
+  I '$$GET1^DIQ(612418,..GetCIEN(),5) S ARHDDEF=$$GET1^DIQ(44,..GetCIEN(),3,"I") Q $$GET1^DIQ(4,+$G(ARHDDEF),1.01)  ;MTZ
+  I '$$GET1^DIQ(612418,..GetCIEN(),5) S ARHDEF="",ARHDEF=$$GET1^DIQ(44,..GetCIEN(),3.5,"I"),ARHDDMC=$$GET1^DIQ(40.8,ARHDEF,.07,"I")  Q $$GET1^DIQ(4,+$G(ARHDDMC),1.01,"E") ;SFC
+  Q $$GET1^DIQ(612418,..GetCIEN(),5)
+  </script>
+  
+  <script language="cache" method="GetValue6" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  N ARHDST,ARHDDMC,ARHDDEF
+  S (ARHDST,ARHDDMC,ARHDDEF)=""
+  I '$$GET1^DIQ(612418,..GetCIEN(),6) S ARHDDEF=$$GET1^DIQ(44,..GetCIEN(),3.5,"I"),ARHDDMC=$$GET1^DIQ(40.8,ARHDDEF,.07,"I"),ARHDST=$$GET1^DIQ(4,$G(ARHDDMC),.02,"I")  Q $$GET1^DIQ(4,+$G(ARHDDMC),1.03)_"  "_$$GET1^DIQ(5,+$G(ARHDST),1)_"  "_$$GET1^DIQ(4,+$G(ARHDDMC),1.04)  ;SFC
+  I '$$GET1^DIQ(612418,..GetCIEN(),6) S ARHDDEF=$$GET1^DIQ(44,..GetCIEN(),3,"I"),ARHDST=$$GET1^DIQ(4,+$G(ARHDDEF),.02,"I") Q $$GET1^DIQ(4,+$G(ARHDDEF),1.03)_"  "_$$GET1^DIQ(5,+$G(ARHDST),1)_"  "_$$GET1^DIQ(4,+$G(ARHDDEF),1.04)  ;MTZ
+  Q $$GET1^DIQ(612418,..GetCIEN(),6)
+  </script>
+  
+  <script language="cache" method="GetValue7" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  Q $$GET1^DIQ(612418,..GetCIEN(),1.5)
+</script>
+
+<script language="cache" method="GetValue8" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  Q $$GET1^DIQ(612418,..GetCIEN(),3.2)
+  </script>
+ 
+  <script language="cache" method="GetValue9" arguments="ARHDFLD:%String" returntype="%String">
+  ; *** Get and return the external value of a field
+  Q $$GET1^DIQ(612418,..GetCIEN(),3.4)
+  </script>
+
+<script language="cache" method="OptionTag" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  ; *** Output an option tag
+  N ARHDOPT
+  S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_"""" ; Value is returned when form is submitted
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected""" ; Preselect default value
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>" ; Escape special [X]HTML characters
+  Q ARHDOPT
+</script>
+
+<script language="cache" method="GetValue" arguments="ARHDFLD:%String,ARHDFLG:%String" returntype="%String">
+Q $$GET1^DIQ(200,..GetDUZ(),ARHDFLD,$G(ARHDFLG))
+</script>
+
+ <tr> 
+ <td height="20" bgcolor='#f0f8ff' style="border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px" colspan="3">
+ <p align="center"><b><font color='000000' size="4" width="769" face="Arial">1) Enter/Edit Clinic Demographics for Scheduling Post Cards v3.0 <br>Region
+ <input type ="text" style="color:  #000000; background-color=#f0f8ff" p align="center" maxlength="1" name="REG" value="#(..GetREG())#" size="1">
+ <b><font color='BLACK' size="4" face="Arial">- VAMC:
+ <input type ="text" style="color:  #000000; background-color=#f0f8ff" p align="center" maxlength="30" name="STAT" value="#(..GetSTA1())#" size="30"></center>
+ </font></b>
+ </td></tr>
+ </head>
+ <body onload='javascript:return SetFocus();'>
+ <form name='frmEditXeroxWalk3' method='post' action='#(..Link(%request.URL))#'>
+ <table border='2' id='table2' cellspacing='0' cellpadding='6' width='767' bordercolor='BLACK'><tr>
+ <td height='2' bgcolor='#f0f8ff' style='color: #000000; border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px' colspan='2'>
+ <tr><td><font color='000000' size='4'>Click to Pick CrossWalk Clinic: 
+ <select name='cbxClinic' onChange='javascript:onChange()' tabindex='1'>#(..GetClinics())#</select>
+ </br><font face='Arial Narrow' color='#000000' size='2'>After choosing clinic, if both address lines below don't display - check for VistA data in INSTITUTION field of Clinic entry</font>
+ <table>
+ <tr><p align='center'>
+ <td><font color='000000' size="2">Clinic IEN: </td>
+ <td><input type='text' readonly='readonly' style='color: #000000; background-color:#f0f8ff' name='ClinicName' title='computer number of clinic' value='#(..GetCIEN())#' maxlength='10' size='11'></td>
+ </br><tr><td><font color='000000' size="2">Friendly Name:  </td>
+ <td><input type='text' name='edtFriendlyName' title='type in friendly name of clinic' value='#(..GetValue2(2))#' onChange='javascript:modified()' maxlength='30' size='31' tabindex='2'></td>
+ <td><font color='000000' size='2'>Mail Stop:</td>
+ <td><input type='text' name='edtMailStop' title='type in VAMC mail code for clinic' value='#(..GetValue1(1))#' onChange='javascript:modified()' maxlength='25' size='26' tabindex='3' ></td></center>
+ </tr>
+ <tr>
+ </br><tr><td><font color='000000' size='2'>Clin Loc 1</td>
+ <td><input type='text' bgcolor='#FFFFFF' name='edtPhysLocation' title='type in brief directions to clinic' value='#(..GetValue3(3))#' onChange='javascript:modified()' maxlength='35' size='36' tabindex='4'></td>
+ <td><font color='000000' size='2'>Clinic Override Cancel Phone:</td>
+ <td><input type='text' body bgcolor='White' name='edtCPhone' title='type in digits for clinic' value='#(..GetValue4(4))#' onChange='javascript:modified()' maxlength='20' size='21' tabindex='7' ></td></center>
+ </tr>
+ <tr>
+ </br><tr><td><font color='000000' size='2'>Clin Loc 2</td>
+ <td><input type='text' bgcolor='#FFFFFF' name='edtPhysLocation2' title='type in brief directions to clinic' value='#(..GetValue8(8))#' onChange='javascript:modified()' maxlength='35' size='36' tabindex='5' ></td>
+ <td><font color='000000' size='2'>Clinic Override Make Appt Phone:</td> 
+ <td><input type='text' bgcolor='#ffffff' name='edtMaPhone' title='type in up to 20 digits for clinic' value='#(..GetValue7(7))#' onChange='javascript:modified()' maxlength='20' size='21' tabindex='8' ></td></center>
+ </tr>
+ <tr>
+ <td><tr><td><font color='000000' size='2'>Clin Loc 3</td>
+ <td><input type='text' name='edtPhysLocation3' title='type in brief directions to clinic' value='#(..GetValue9(8))#' onChange='javascript:modified()' maxlength='35' size='36' tabindex='6'></td>
+ </tr>
+ <tr>
+ <td><font color='000000' size='2'>Street Addr: </td>
+ <td><input type='text' name='edtAddrL1' style='color: #000000; background-color:#f0f8ff' title='Address Line will appear here' value='#(..GetValue5(5))#' maxlength='30' size='31'></td></center>
+ <td><font color='000000' size='2'>City State Zip: </td>
+ <td><input type='text' maxlength='40' style='color: #000000; background-color:f0f8ff' name='edtAddrL2' title='City, State & Zip Code will appear here' value='#(..GetValue6(6))#' maxlength='40' size='41'></td></center>
+ </table>
+ </body>
+<!-- Call the SetFocus script once the page is loaded -->
+
+</br><font color='000000' size="2"> Click Appropriate Action:    <input type="submit" name="btnSave" title="Send to VistA for processing" value="Submit" tabindex="9" class="button" onclick="document.body.style.cursor='wait';"/>
+<input type="button" value="Refresh Page" title="clear drop down box & all memo boxes" onClick="window.location.href=window.location.href">
+<input type="submit" name="btnLogout" value="Logout" title="Log out of application"/>
+</br></br>
+<script language="Cache" runat="server">
+D BTM1^R1ACNLNK
+</script>
+ </td></tr>
+ </table>
+ </form>
+ </body>
+ </body>
+ </html>

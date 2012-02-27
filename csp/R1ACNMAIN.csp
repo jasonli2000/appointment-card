@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!version 3.0; Print Appointment PostCards; Build 1; April 2011>
+<html>
+
+<csp:class super="%CSP.Page,R1AC.Subclass" private="1" errorpage="r1acnlog.csp">
+<title> Region 1 Scheduling Project Main Menu v3.0 </title>
+
+<head bgcolor='#f0f8ff' topmargin="0">
+<div id="container-header">
+</div>
+<table border="" id="table1" cellspacing="0" cellpadding="6" width="811" bordercolor="#1E2D54">
+<tr>
+<td height="20" bgcolor="#f0f8ff" style="border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px" colspan="2">
+<p align="center"><b><font color="000000" size="4" face="Arial">Xerox Print Post Card Main Menu V3.0<br>Region
+<input type ="text" style="color:  #000000; background-color: #f0f8ff" p align="center" maxlength="1" name="REG" value="#(..GetREG())#" size="1">
+<b><font color="#000000" size="4" face="Arial">- VAMC:
+<input type ="text" style="color:  #000000; background-color: #f0f8ff" p align="center" maxlength="30" name="STAT" value="#(..GetSTA1())#" size="30"></b></center>
+</tr>
+
+
+<!-- ########## Application / page setup ########## -->
+
+<script type="text/javascript">
+function onChange() {
+document.forms['frmEditXeroxMain'].elements['cbxClinic'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxMain.submit();
+return (true);}	
+</script>
+
+<script language="cache" runat="server">
+  D DT^DICRW ;%=Date/Time
+  D SETDUZ^R1UTCSPZ
+  D SETUP^R1UTCSPX($$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")),$$%PackageName_"."_$$%ClassName(0))
+  D METATAGS^R1UTCSPY(.ARHDROOT,"",$$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")))
+  D STYLESHT^R1UTCSPW(.ARHDROOT)
+  D SETFOCUS^R1UTCSPX(.ARHDROOT)
+  D DISPLAY^R1UTCSPX(.ARHDROOT)
+</script>
+
+
+<!-- ########## Logout and save code ########## -->
+
+<script language="cache" runat="server">
+  ; *** User clicked the "Logout" button
+ I $$GETREQ^R1UTCSPZ("btnLogout")]"" D
+ . D LOGOUT^R1UTCSP2
+ . W !,"<script type=""text/javascript"">" ;JavaScript to redirect
+ . W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+ . W !,"</","script>" ; Cannot have a closing script tag in a script
+ . Q
+  </script>
+  
+  
+<!-- ########## Event handlers ########## -->
+
+<!--script language="cache" method="OnTimeout" arguments="" returntype="">
+   D LOGOUT^R1UTCSP2 ; Clean-up session, end session, and logout
+   W !,"<script type=""text/javascript"">" ;JavaScript to redirect
+   W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+   W !,"</","script>" ; Cannot have a closing script tag in a script
+  </script>
+
+
+<script language="cache" method="OnEndSession" arguments="" returntype="">
+  D LOGOUT^R1UTCSP2
+</script-->
+
+<!-- ########## Application methods ########## -->
+
+<script language="cache" method="GetDUZ" arguments="" returntype="%String">
+  Q +$$GETSES^R1UTCSPZ(DUZ)
+</script>
+
+<script language="cache" method="GetSTA1" arguments="ARHDFLD:%String" returntype="%String">
+   N STA,STAT
+   S (STA,STAT)=""
+   D SETDUZ^R1UTCSPZ
+   S STAT=$G(DUZ(2)) S STA=$$GET1^DIQ(4,$G(STAT),.01)
+   Q $G(STA)
+</script>
+
+<script language="cache" method="GetREG" arguments="ARHDFLD:%String" returntype="%String">
+   N REG S REG=""
+   S REG=$$GET1^DIQ(612418.5,1,7.9)
+   Q $G(REG)
+</script>
+
+<script language="Cache" runat="server">
+ N ARHDFDA S ARHDFDA=""
+ D DT^DICRW ;%=Date/Time
+ D SETDUZ^R1UTCSPZ
+ S ARHDFDA(612418.5,1_",",7.5)=$G(%)
+ S ARHDFDA(612418.5,1_",",7.8)=$G(DUZ)
+ D FILE^DIE("","ARHDFDA","") ;File Login Date/Time & DUZ in Site Param File 
+ I $$XYENABLE^R1UTCSPZ(0) ;SFVAMC - Compensate for spacing in <v5.2 in Cache
+ </script>
+ </head>
+
+
+<!-- Call the SetFocus script once the page is loaded -->
+
+<body onload="javascript:return SetFocus();">
+<form name="frmEditXeroxMain" method="post" action="#(..Link(%request.URL))#">
+<table border="1" id="table1" cellspacing="0" cellpadding="6" width="767" bordercolor="#1E2D54">
+<tr>
+<td height="20" bgcolor='#f0f8ff' style="border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px" colspan="3">
+ <p align="center"><b><font color='000000' size="2" width="769" face="Arial"><br/>1) Use ENTER/EDIT CLINIC DEMOGRAPHICS to setup a new Cross-Walk Clinic with basic clinic information
+ <br/>Clinic Location is a brief description for patient to find clinic - i.e. Bldg 200, Module 2  -or- Bldg 203, 2nd Floor, Cath Lab
+ <br/>Phone numbers are optional & over-ride generic phone numbers setup for Med Center Division
+ <br/><br/>2) Use ENTER/EDIT TEMPLATES FOR SCHEDULING POST CARDS to create Boiler Plates to attach to your clinic (or 
+ <br/>group of like clinics).  A Boiler Plate must be named & can have up to 15 different templates (1 for each type
+ <br/> of post card) attached.  You can also edit templates already created on this screen.
+ <br/><br/>3) Use DISPLAY POST CARD SETTINGS FOR A CLINIC as a display to check if all settings are correct.
+ <br/><br/>5) Use ATTACH BOILER PLATE TO CROSS WALK CLINIC(S) to make the association of a BP (containing up to 15
+ <br/>templates) to 1 clinic, or a group of like clinics.
+ <br/><br/>6) Use Submit Over-ride Defaults for Post Card Type as a parameter option to setup string match or Clinic Stop match
+ <br/>to define post cards: #2, #3, #5, #8, #12</br></br>
+ </center>
+ </font></b>
+ </br>
+ <input type="submit" name="btnLogout" value="Logout" title="Log out of application" tabindex="13"/>
+  
+ <script language="Cache" runat="server">
+W "</br>"
+D SETUP^R1ACNLNK
+I $G(ARHDROOT)]"" K @ARHDROOT
+W "</br>"
+D BTM1^R1ACNLNK
+</script>
+ </td></tr></table>
+ </table>
+ </form>
+ </body>
+ </body>
+ </html>

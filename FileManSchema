@@ -1,0 +1,432 @@
+znspace "VISTA"
+
+VISTA>S DUZ=1 D Q^DIS DUZ=1 D Q^DI
+
+
+VA FileMan 22.0
+
+
+Select OPTION: 88  DATA DICTIONARY UTILITIES
+Select DATA DICTIONARY UTILITY OPTION: 11  LIST FILE ATTRIBUTES
+ START WITH WHAT FILE: R1AC CROSSWALK// 612418612418  R1AC CROSSWALK
+                                          (0 entries)
+      GO TO WHAT FILE: R1AC CROSSWALK// 612418612418  R1AC CROSSWALK
+                                          (0 entries)
+      Select SUB-FILE: 
+Select LISTING FORMAT: STANDARD// 11  STANDARD
+Start with field: FIRST// 
+DEVICE: HOME;387;9999HOME;387;9999  TELNET
+STANDARD DATA DICTIONARY #612418 -- R1AC CROSSWALK FILE                                                                                                                                                                           FEB 27,2012@14:23:12  PAGE 1
+STORED IN ^DIZ(612418,  *** NO DATA STORED YET ***   SITE: PLA.ISC-WASH.MED.VA.GOV   UCI: VISTA,FOI                                                                                                                                                           
+
+DATA          NAME                  GLOBAL        DATA
+ELEMENT       TITLE                 LOCATION      TYPE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Main file for PRINT PATIENT POST CARD project containing Demographic fields, blue box memo boxes, and pointer to Boiler Plate (#612418.1) 
+
+
+              DD ACCESS: @
+
+CROSS
+REFERENCED BY: CLINIC(B), BLUEBOX TEMPLATE(C)
+
+612418,.01    CLINIC                 0;1 POINTER TO HOSPITAL LOCATION FILE (#44) (Required)
+
+              INPUT TRANSFORM:  S DIC("S")="I $P(^(0),U,3)=""C""" D ^DIC K DIC S DIC=$G(DIE),X=+Y K:Y<0 X S DINUM=X
+              LAST EDITED:      OCT 11, 2007 
+              HELP-PROMPT:      NAME MUST BE 3-30 CHARACTERS, NOT NUMERIC OR STARTING WITH PUNCTUATION 
+              DESCRIPTION:
+                                Pointer to #44 HOSPITAL LOCATION.  CrossWalk Clinic to be used.  
+
+              TECHNICAL DESCR:
+                                Name of user/DUZ of person who originally enters CrossWalk Clinic.  
+
+              SCREEN:           S DIC("S")="I $P(^(0),U,3)=""C"""
+              EXPLANATION:      Select active clinics
+              NOTES:            XXXX--CAN'T BE ALTERED EXCEPT BY PROGRAMMER
+
+              CROSS-REFERENCE:  612418^B 
+                                1)= S ^DIZ(612418,"B",$E(X,1,30),DA)=""
+                                2)= K ^DIZ(612418,"B",$E(X,1,30),DA)
+
+              CROSS-REFERENCE:  ^^TRIGGER^612418^.02 
+                                1)= K DIV S DIV=X,D0=DA,DIV(0)=D0 S Y(1)=$S($D(^DIZ(612418,D0,"AUDIT")):^("AUDIT"),1:"") S X=$P(Y(1),U,1),X=X S DIU=X K Y S X=DIV S X=+$G(DUZ) X ^DD(612418,.01,1,2,1.4)
+                                1.4)= S DIH=$G(^DIZ(612418,DIV(0),"AUDIT")),DIV=X S $P(^("AUDIT"),U,1)=DIV,DIH=612418,DIG=.02 D ^DICR
+                                2)= Q
+                                CREATE VALUE)= S X=+$G(DUZ)
+                                DELETE VALUE)= NO EFFECT
+                                FIELD)= ENTERED BY
+
+              CROSS-REFERENCE:  ^^TRIGGER^612418^.03 
+                                1)= K DIV S DIV=X,D0=DA,DIV(0)=D0 S Y(1)=$S($D(^DIZ(612418,D0,"AUDIT")):^("AUDIT"),1:"") S X=$P(Y(1),U,2),X=X S DIU=X K Y S X=DIV S X=DT X ^DD(612418,.01,1,3,1.4)
+                                1.4)= S DIH=$G(^DIZ(612418,DIV(0),"AUDIT")),DIV=X S $P(^("AUDIT"),U,2)=DIV,DIH=612418,DIG=.03 D ^DICR
+                                2)= Q
+                                CREATE VALUE)= S X=DT
+                                DELETE VALUE)= NO EFFECT
+                                FIELD)= DATE CLINIC ENTERED
+
+
+612418,.02    ENTERED BY             AUDIT;1 POINTER TO NEW PERSON FILE (#200)
+
+              LAST EDITED:      OCT 11, 2007 
+              HELP-PROMPT:      Name of user/DUZ of person who originally enters CrossWalk Clinic. 
+              DESCRIPTION:
+                                Name of user/DUZ of person who originally enters CrossWalk Clinic.  
+
+              TECHNICAL DESCR:
+                                Name of user/DUZ of person who originally enters CrossWalk Clinic.  
+
+              NOTES:            TRIGGERED by the CLINIC field of the R1AC CROSSWALK File 
+
+
+612418,.03    DATE CLINIC ENTERED    AUDIT;2 DATE
+
+              INPUT TRANSFORM:  S %DT="E" D ^%DT S X=Y K:Y<1 X
+              LAST EDITED:      OCT 11, 2007 
+              HELP-PROMPT:      (No range limit on date) 
+              DESCRIPTION:
+                                Original date that CrossWalk Clinic was entered into this file.  Used for tracking/audit purposes.  
+
+              TECHNICAL DESCR:
+                                Original date that CrossWalk Clinic was entered into this file.  Used for tracking/audit purposes.  
+
+              NOTES:            TRIGGERED by the CLINIC field of the R1AC CROSSWALK File 
+
+
+612418,1      CLINIC MAIL STOP       0;2 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>25!($L(X)<1) X
+              LAST EDITED:      FEB 26, 2007 
+              HELP-PROMPT:      Answer must be 1-25 characters in length. 
+              DESCRIPTION:
+                                VA Mail Code used for routing internal mail in VAMC.  
+
+              TECHNICAL DESCR:
+                                VA Mail Code used for routing internal mail in VAMC.  
+
+
+612418,1.1    CLINIC CANCEL PHONE    0;5 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>20!($L(X)<8) X
+              LAST EDITED:      JUN 01, 2007 
+              HELP-PROMPT:      Answer must be 8-20 characters in length. 
+              DESCRIPTION:
+                                Enter phone number here to over-write Cancel Phone Number for CBOC/Med Center Division.  Different Cancel Phone Number can be set up for each Clinic in the CrossWalk.  This field used to customize each VAMC using product.  
+
+              TECHNICAL DESCR:
+                                Enter phone number here to over-write Cancel Phone Number for CBOC/Med Center Division.  Different Cancel Phone Number can be set up for each Clinic in the CrossWalk.  This field used to customize each VAMC using product.  
+
+
+612418,1.5    CLINIC MAKE APPT PHONE 0;6 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>20!($L(X)<8) X
+              LAST EDITED:      JUN 01, 2007 
+              HELP-PROMPT:      Answer must be 8-20 characters in length. 
+              DESCRIPTION:
+                                Enter phone number here to over-write Make Appt Phone Number for CBOC/Med Center Division.  A different phone number can be entered for each clinic in the CrossWalk.  This field used to customize each VAMC using product.  
+
+              TECHNICAL DESCR:
+                                Enter phone number here to over-write Make Appt Phone Number for CBOC/Med Center Division.  A different phone number can be entered for each clinic in the CrossWalk.  This field used to customize each VAMC using product.  
+
+
+612418,2      CLINIC FRIENDLY NAME   0;3 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<1) X
+              LAST EDITED:      AUG 07, 2006 
+              HELP-PROMPT:      Answer must be 1-30 characters in length 
+              DESCRIPTION:
+                                Name of Clinic to appear on the Appointment Post Card.  Name should be informative, but friendly to the patient. Sensitive clinic names can be "sanitized" for mail out here.  
+
+              TECHNICAL DESCR:
+                                Name of Clinic to appear on the Appointment Post Card.  Name should be informative, but friendly to the patient. Sensitive clinic names can be "sanitized" for mail out here.  
+
+
+612418,3      PHYSICAL LOCATION 1    0;4 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>35!($L(X)<1) X
+              LAST EDITED:      JUL 22, 2008 
+              HELP-PROMPT:      Answer must be 1-35 characters in length. 
+              DESCRIPTION:      Description of how patient should navigate to his clinic appointment.  Text may include: - where to park - what path to walk to building - name/number of clinic building - floor, description of how to navigate the bldg -
+                                room/area of clinic 
+
+              TECHNICAL DESCR:  Description of how patient should navigate to his clinic appointment.  Text may include: - where to park - what path to walk to building - name/number of clinic building - floor, description of how to navigate the bldg -
+                                room/area of clinic 
+                                 
+                                Overflow text can be input in field:  PHYSICAL LOCATION 2 & 3.  
+
+
+612418,3.2    PHYSICAL LOCATION 2    0;7 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>35!($L(X)<3) X
+              LAST EDITED:      JUL 22, 2008 
+              HELP-PROMPT:      Answer must be 3-35 characters in length. 
+              DESCRIPTION:      (Second line continuation of PHYSICAL LOCATION 1) 
+                                 
+                                Description of how patient should navigate to his clinic appointment.  Text may include: - where to park - what path to walk to building - name/number of clinic building - floor, description of how to navigate the bldg -
+                                room/area of clinic 
+
+              TECHNICAL DESCR:  (Second line continuation of PHYSICAL LOCATION 1) 
+                                 
+                                Description of how patient should navigate to his clinic appointment.  Text may include: - where to park - what path to walk to building - name/number of clinic building - floor, description of how to navigate the bldg -
+                                room/area of clinic 
+                                 
+                                Overflow text can be entered in field:  PHYSICAL LOCATION 3 
+
+
+612418,3.4    PHYSICAL LOCATION 3    0;8 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>35!($L(X)<3) X
+              LAST EDITED:      JUL 22, 2008 
+              HELP-PROMPT:      Answer must be 3-35 characters in length. 
+              DESCRIPTION:      (Second line continuation of PHYSICAL LOCATION 1) 
+                                 
+                                Description of how patient should navigate to his clinic appointment.  Text may include: - where to park - what path to walk to building - name/number of clinic building - floor, description of how to navigate the bldg -
+                                room/area of clinic 
+
+              TECHNICAL DESCR:  (Second line continuation of PHYSICAL LOCATION 1) 
+                                 
+                                Description of how patient should navigate to his clinic appointment.  Text may include: - where to park - what path to walk to building - name/number of clinic building - floor, description of how to navigate the bldg -
+                                room/area of clinic 
+
+
+612418,4      BB1                    1;0   WORD-PROCESSING #612418.04
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #1 Pre-Appt/ACA.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #1 Pre-Appt/ACA.  Text may be customized for each clinic within this file.  
+
+
+612418,5      ADDRESS L1             2;1 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<1) X
+              LAST EDITED:      AUG 07, 2006 
+              HELP-PROMPT:      Answer must be 1-30 characters in length 
+              DESCRIPTION:
+                                First line of return address for CrossWalk Clinic.  Usually found in STREET ADDR. 1 in the INSTITUTION file.  Override address can be found in #612418.7 
+
+              TECHNICAL DESCR:
+                                First line of return address for CrossWalk Clinic.  Usually found in STREET ADDR. 1 in the INSTITUTION file.  Override address can be found in #612418.7 
+
+
+612418,6      ADDRESS L2             2;2 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>40!($L(X)<1) X
+              LAST EDITED:      SEP 20, 2006 
+              HELP-PROMPT:      Answer must be 1-40 characters in length. 
+              DESCRIPTION:
+                                Second line of the CrossWalk clinic address.  Usually found as a concatination of CITY, STATE abbreviation  ZIP fields in the INSTITUTION file. Override address can be found in #612418.7 
+
+              TECHNICAL DESCR:
+                                Second line of the CrossWalk clinic address.  Usually found as a concatination of CITY, STATE abbreviation  ZIP fields in the INSTITUTION file. Override address can be found in #612418.7 
+
+
+612418,7      FLD7                   2;3 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<1) X
+              LAST EDITED:      AUG 07, 2006 
+              HELP-PROMPT:      Answer must be 1-30 characters in length 
+              DESCRIPTION:
+                                (Reserved for future use.) 
+
+              TECHNICAL DESCR:
+                                (Reserved for future use.) 
+
+
+612418,8      FLD8                   2;4 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<1) X
+              LAST EDITED:      AUG 07, 2006 
+              HELP-PROMPT:      Answer must be 1-30 characters in length 
+              DESCRIPTION:
+                                (Reserved for future use.) 
+
+              TECHNICAL DESCR:
+                                (Reserved for future use.) 
+
+
+612418,9      BB2                    3;0   WORD-PROCESSING #612418.09
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #2 Comp & Pen.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #2 Comp & Pen.  Text may be customized for each clinic within this file.  
+
+
+612418,10     BB3                    4;0   WORD-PROCESSING #612418.01
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #3 Appt - Bring ???  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #3 Appt - Bring ???  Text may be customized for each clinic within this file.  
+
+
+612418,11     BB4                    5;0   WORD-PROCESSING #612418.011
+
+              DESCRIPTION:      Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #4 Appt Coming Up.  Text may be customized for each clinic within this file.  
+                                 
+                                This Post Card runs off of a clone of the national VistA software option: SDPRLETTERS for Pre-Appointments. 
+
+              TECHNICAL DESCR:  Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #4 Appt Coming Up.  Text may be customized for each clinic within this file.  
+                                 
+                                This Post Card runs off of a clone of the national VistA software option: SDPRLETTERS for Pre-Appointments. 
+
+
+612418,12     BB5                    6;0   WORD-PROCESSING #612418.012
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #5 Phone Consult.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #5 Phone Consult.  Text may be customized for each clinic within this file.  
+
+
+612418,13     BB6                    7;0   WORD-PROCESSING #612418.013
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #6 Annual Means Test: 30/60 day.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #6 Annual Means Test: 30/60 day.  Text may be customized for each clinic within this file.  
+
+
+612418,14     BB7                    8;0   WORD-PROCESSING #612418.014
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #7 Means Test:  0 day.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #7 Means Test:  0 day.  Text may be customized for each clinic within this file.  
+
+
+612418,15     BB8                    9;0   WORD-PROCESSING #612418.015
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #8 Mobile Svcs Appt. Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #8 Mobile Svcs Appt. Text may be customized for each clinic within this file.  
+
+
+612418,16     BB9                    10;0   WORD-PROCESSING #612418.016
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #9 Appt Loc Changed Alert.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #9 Appt Loc Changed Alert.  Text may be customized for each clinic within this file.  
+
+
+612418,17     BB10                   11;0   WORD-PROCESSING #612418.017
+
+              LAST EDITED:      AUG 21, 2006 
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #10 No Show - Please Call Us.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #10 No Show - Please Call Us.  Text may be customized for each clinic within this file.  
+
+
+612418,18     BB11                   12;0   WORD-PROCESSING #612418.018
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #11 Canceled Appt + New Appt Alert.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #11 Canceled Appt + New Appt Alert.  Text may be customized for each clinic within this file.  
+
+
+612418,19     BB12                   13;0   WORD-PROCESSING #612418.019
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #12 Group Orientation Appt - Alert. Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #12 Group Orientation Appt - Alert. Text may be customized for each clinic within this file.  
+
+
+612418,20     BB13                   14;0   WORD-PROCESSING #612418.02
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #13 Cancel Appt/No Reschedule - Alert.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #13 Cancel Appt/No Reschedule - Alert.  Text may be customized for each clinic within this file.  
+
+
+612418,21     BB14                   15;0   WORD-PROCESSING #612418.021
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #14 Fee Based Service at Non-VA Site.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #14 Fee Based Service at Non-VA Site.  Text may be customized for each clinic within this file.  
+
+
+612418,22     BB15                   16;0   WORD-PROCESSING #612418.022
+
+              DESCRIPTION:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #15 Birthday.  Text may be customized for each clinic within this file.  
+
+              TECHNICAL DESCR:
+                                Maximum 9 line, 63 characters per line memo box where description may be entered for Post Card #15 Birthday.  Text may be customized for each clinic within this file.  
+
+
+612418,23     BLUEBOX TEMPLATE       17;1 POINTER TO R1AC BLUEBOX BOILER PLATES FILE (#612418.1)
+
+              LAST EDITED:      OCT 25, 2006 
+              HELP-PROMPT:      Pointer to #612418.1 
+              DESCRIPTION:
+                                Pointer to #612418.1  IRMS XEROX BLUEBOX BOILER PLATES.  Even though a Boiler Plate is selected, it may be customized within this file for individual clinics.  
+
+              TECHNICAL DESCR:
+                                Pointer to #612418.1  IRMS XEROX BLUEBOX BOILER PLATES.  Even though a Boiler Plate is selected, it may be customized within this file for individual clinics.  
+
+              CROSS-REFERENCE:  612418^C 
+                                1)= S ^DIZ(612418,"C",$E(X,1,30),DA)=""
+                                2)= K ^DIZ(612418,"C",$E(X,1,30),DA)
+
+
+612418,24     DEFAULT POSTCARD TYPE  17;2 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>15)!(X<1)!(X?.E1"."1N.N) X
+              LAST EDITED:      NOV 27, 2007 
+              HELP-PROMPT:      Type a Number between 1 and 15, 0 Decimal Digits 
+              DESCRIPTION:
+                                Type a number between 1 and 15, 0 Decimal Digits.  
+
+
+
+      FILES POINTED TO                      FIELDS
+
+HOSPITAL LOCATION (#44)           CLINIC (#.01)
+
+NEW PERSON (#200)                 ENTERED BY (#.02)
+
+R1AC BLUEBOX BOILER PLATES 
+                   (#612418.1)    BLUEBOX TEMPLATE (#23)
+
+
+
+INPUT TEMPLATE(S):
+
+PRINT TEMPLATE(S):
+
+SORT TEMPLATE(S):
+
+FORM(S)/BLOCK(S):
+R1AC XWL1                     AUG 14, 2006@11:37  USER #0
+  R1AC XEROX B1                 DD #612418
+
+
+
+Select DATA DICTIONARY UTILITY OPTION: 
+
+
+
+
+Select OPTION: 
+VISTA>HALT

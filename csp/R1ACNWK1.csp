@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!version 3.0; Print Appointment PostCards; Build 1; April 2011>
+<html>
+
+<!--csp:class super="%CSP.Page,%CSP.SessionEvents" private="1" errorpage="r1acnlog.csp"-->
+<csp:class super="%CSP.Page,R1AC.Subclass" private="1" errorpage="r1acnlog.csp">
+<title>Print Post Card Cross Walk for VistA Scheduling Letters 1</title>
+
+<head bgcolor='#FFFFFF' topmargin="0">
+<div id="container-header">
+</div>
+<table border="2" id="table1" cellspacing="0" cellpadding="6" width="810" bordercolor="#1E2D54">
+<tr>
+<td height="20" bgcolor="#f0f8ff" style="border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px" colspan="3">
+<p align="center"><b><font color="#000000" size="4" width="810" face="Arial">2)  Enter/Edit Templates for Scheduling Post Cards V3.0<br>Region
+<input type ="text" style="color:  #000000; background-color: #f0f8ff" p align="center" maxlength="1" name="REG" value="#(..GetREG())#" size="1">
+<b><font color="#000000" size="4" face="Arial">- VAMC:
+<input type ="text" style="color:  #000000; background-color: #f0f8ff" p align="center" maxlength="30" name="STAT" value="#(..GetSTA1())#" size="30"><br>
+<p align="center"><h4>To setup a X-Walk Clinic-BP association follow numbered steps</b></center>
+</font></b>
+</td>
+</tr>
+
+
+<!-- ########## Application / page setup ########## -->
+
+<script type="text/javascript">
+function onChange2() {
+document.forms['frmEditXeroxWalk1'].elements['cbxC2'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk1.submit();
+return (true); }
+</script>
+
+<script type="text/javascript">
+function onChange1() {
+document.forms['frmEditXeroxWalk1'].elements['cbxC1'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk1.submit();
+return (true); }
+</script>
+
+<script type="text/javascript">
+function onChange3() {
+document.forms['frmEditXeroxWalk1'].elements['cbxT'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk1.submit();
+return (true); }
+</script>
+
+<script type="text/javascript">
+function onChange4() {
+document.forms['frmEditXeroxWalk1'].elements['cbxEType'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk1.submit();
+return (true); }
+</script>
+
+<script type="text/javascript">
+function onClick5() {
+document.body.style.cursor="wait";}
+</script>
+
+<script type="text/javascript">
+function onClick6() {
+window.location.href=window.location.href;
+document.body.style.cursor="wait";}
+</script>
+
+<script language="cache" runat="server">
+  N ARHDROOT S ARHDROOT=""
+  S ARHDROOT=$$GETROOT^R1UTCSPX("",1)
+  D SETUP^R1UTCSPX($$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")),$$%PackageName_"."_$$%ClassName(0))
+  D METATAGS^R1UTCSPY(ARHDROOT,"",$$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")))
+  D STYLESHT^R1UTCSPW(ARHDROOT) 
+  D SETFOCUS^R1UTCSPX(ARHDROOT)
+  D DISPLAY^R1UTCSPX(ARHDROOT)
+</script>
+
+<!-- ########## Logout and save code ########## -->
+
+<script language="cache" method="GetREG" arguments="ARHDFLD:%String" returntype="%String">
+   N REG S REG=""
+   S REG=$$GET1^DIQ(612418.5,1,7.9)
+   Q $G(REG)
+</script>
+
+
+<script language="cache" runat="server">
+   I $$GETREQ^R1UTCSPZ("cbxC2")]"" D  ;clinic w/bp
+  .N ARHDATTR,ARHDINDX,ARHDMSG,ARHDMSGS,DA,X,XXX
+  .S (ARHDATTR,ARHDINDX,ARHDMSG,ARHDMSGS,DA,X,XXX)=""
+  .S DA=$$GETREQ^R1UTCSPZ("cbxC2",1)
+  .S ARHDATTR("name")="cbxC2"
+  .S ARHDATTR("value")=DA
+  .I $G(^TMP("R1ACLCK",$J,DA))']"",(+DA>0) S ^TMP("R1ACLCK",$J,DA)=..GetDUZ()
+  .D SET^R1UTCSPX("XXX",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  .S DA=$P(XXX(1),"value=",2)
+  .S DA=$P(DA," />") S DA=$P(DA,"""",2),DA=$P(DA,"""")
+  .D:DA>0
+  ..S (ARHDMSG,ARHDMSGS)="" I +DA>0&($G(^TMP("R1ACLCK",$J,DA))]"") S X=$G(^TMP("R1ACLCK",$J,DA))
+  ..I +X>0 S ARHDMSG=$S(X:$P($G(^VA(200,X,0)),U),1:"Another person")_" is working on this entry.  Please try again later." D
+  ...D MSG^DIALOG("AE",.ARHDMSGS,70,0)
+  ...S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)=""
+  ...W !,"<script type=""text/javascript"">"
+  ...W !,"alert("
+  ...S ARHDINDX=0
+  ...F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+  ....W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX))
+  ....W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");")
+  ....Q
+  ... W !,"</","script>"
+  ...Q
+  ..Q
+  .I $G(^TMP("R1ACLCK",$J,DA))]"" K ^TMP("R1ACLCK",$J,DA)
+  .Q
+  I $$GETREQ^R1UTCSPZ("cbxC1")]"" D  ;clin w/o bp
+  .N ARHDATTR,ARHDINDX,ARHDMSG,ARHDMSGS,DA,X
+  .S (ARHDATTR,ARHDINDX,ARHDMSG,ARHDMSGS,DA,X)=""
+  .S DA=$$GETREQ^R1UTCSPZ("cbxC1",1)
+  .S ARHDATTR("name")="cbxC1"
+  .S ARHDATTR("value")=DA
+  .I $G(^TMP("R1ACLCK",$J,DA))']"",(+DA>0) S ^TMP("R1ACLCK",$J,DA)=..GetDUZ()
+  .D SET^R1UTCSPX("XXX",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  .S DA=$P(XXX(1),"value=",2)
+  .S DA=$P(DA," />") S DA=$P(DA,"""",2),DA=$P(DA,"""")
+  .D:DA>0
+  ..S (ARHDMSG,ARHDMSGS)="" I +DA>0&($G(^TMP("R1ACLCK",$J,DA))]"") S X=$G(^TMP("R1ACLCK",$J,DA)) 
+  ..I +X>0 S ARHDMSG=$S(X:$P($G(^VA(200,X,0)),U),1:"Another person")_" is working on this entry.  Please try again later." D
+  ...D MSG^DIALOG("AE",.ARHDMSGS,70,0)
+  ...S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)=""
+  ...W !,"<script type=""text/javascript"">"
+  ...W !,"alert("
+  ...S ARHDINDX=0
+  ... F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+  .... W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX))
+  .... W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");")
+  .... Q
+  ... W !,"</","script>"
+  ...Q
+  ..Q
+  .I $G(^TMP("R1ACLCK",$J,DA))]"" K ^TMP("R1ACLCK",$J,DA)
+  .Q
+  .;
+  I $$GETREQ^R1UTCSPZ("btnSaveType")]"" D
+  .I $$GETREQ^R1UTCSPZ("btnSaveType")']"" Q
+  .N ARHDFDA,ARHDFLD,ARHDIENS,ARHDMSG,ARHDMSGS,DA,R1ACLCK,ZZMSG,FDA,NTYPE,ARHDERR,ARHDATTR,ARHDINDX
+  .S (ARHDFDA,ARHDFLD,ARHDIENS,ARHDMSG,ARHDMSGS,DA,R1ACLCK,ZZMSG,FDA,NTYPE,ARHDATTR,ARHDINDX)=""
+  .S ARHDERR=0
+  . S NTYPE=$$GETREQ^R1UTCSPZ("edtType",1)
+  . Q:$G(NTYPE)']""  ;No new BP named
+  . S ARHDATTR("name")="edtType"
+  . S ARHDATTR("value")=NTYPE
+  . D SET^R1UTCSPX("TTT",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  . S NTYPE=$P(TTT(1),"value=",2)
+  . S NTYPE=$P(NTYPE," />") S NTYPE=$P(NTYPE,"""",2),NTYPE=$P(NTYPE,"""")
+  . S ARHDFDA(612418.1,"+1,",.01)=NTYPE
+  . D UPDATE^DIE("","ARHDFDA","ARHDIENS","ARHDMSGS")
+  . S ^TMP("SSSXXX",$J)=$G(ARHDIENS(1))
+  . D
+  ..S (ARHDMSG,ARHDMSGS)=""
+  ..S ARHDMSG=$G(NTYPE)_" BP HAS "_$S(ARHDERR>0:"NOT ",1:"")_"BEEN ADDED."
+  ..D MSG^DIALOG("AE",.ARHDMSGS,70,0)
+  ..S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)=""
+  ..W !,"<script type=""text/javascript"">"
+  ..W !,"alert("
+  ..S ARHDINDX=0
+  .. F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+  ... W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX))
+  ... W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");")
+  ... Q
+  .. W !,"</","script>"
+  .I $$GETREQ^R1UTCSPZ("cbxC1",1)'>0&($$GETREQ^R1UTCSPZ("cbxC2",1)'>0) Q
+  .I $$GETREQ^R1UTCSPZ("cbxC1",1)>0 S DA=$$GETREQ^R1UTCSPZ("cbxC1",1)
+  .I $$GETREQ^R1UTCSPZ("cbxC2",1)>0 S DA=$$GETREQ^R1UTCSPZ("cbxC2",1)
+  .Q:DA="@"
+  .I $G(ARHDIENS(1))]"" K ARHDFDA S ARHDFDA(612418,DA_",",23)=ARHDIENS(1) D FILE^DIE("","ARHDFDA","ARHDMSGS")
+  .D CLEAN^DILF
+  .D ^R1ACNWKY
+  .Q
+  .;
+  I $$GETREQ^R1UTCSPZ("cbxEType")]"" D  ;Select existing BP
+  .I $$GETREQ^R1UTCSPZ("cbxEType")']"" Q
+  .N ARHDFDA,DA,R1ACLCK,DAZ,ETYPE,ARHDMSG,ARHDMSGS,ARHDATTR,REF
+  .S (ARHDFDA,DA,R1ACLCK,ARHDMSG,ARHDMSGS,ARHDATTR,REF)=""
+  .S DAZ="",DAZ=$$GETREQ^R1UTCSPZ("cbxC1",1)
+  .S ETYPE="",ETYPE=$$GETREQ^R1UTCSPZ("cbxEType",1)
+  .S ARHDATTR("name")="cbxEType"
+  .S ARHDATTR("value")=ETYPE
+  .D SET^R1UTCSPX("ZZZ",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  .S ETYPE=$P(ZZZ(1),"value=",2)
+  .S ETYPE=$P(ETYPE," />") S ETYPE=$P(ETYPE,"""",2),ETYPE=$P(ETYPE,"""")
+  .I $$GETREQ^R1UTCSPZ("cbxC1",1)'>0&($$GETREQ^R1UTCSPZ("cbxC2",1)'>0) Q
+  .I $$GETREQ^R1UTCSPZ("cbxC2",1)>0 S DAZ=$$GETREQ^R1UTCSPZ("cbxC2",1)
+  .I $$GETREQ^R1UTCSPZ("cbxC1",1)>0 S DAZ=$$GETREQ^R1UTCSPZ("cbxC1",1)
+  .I DAZ="@" Q
+  .I DAZ="" Q
+  .I +DAZ>0&($G(ETYPE)'="@")&(($G(ETYPE)]"")) S REF=$NA(^DIZ(612418,DAZ,0))
+  .I +DAZ>0&($G(ETYPE)'="@")&(($G(ETYPE)]"")) D LOCK^DILF(REF) I $T D
+  ..; *** Got lock, attempt to save
+  ..I $G(^TMP("R1ACLCK",$J,DAZ))']"",(+DAZ>0) S ^TMP("R1ACLCK",$J,DAZ)=..GetDUZ()
+  ..S ARHDFDA(612418,DAZ_",",23)=$G(ETYPE) D FILE^DIE("","ARHDFDA","ARHDMSGS")
+  ..L -^DIZ(612418,DAZ,0)
+  ..I $G(^TMP("R1ACLCK",$J,DAZ))]"" K ^TMP("R1ACLCK",$J,DAZ)
+  .I DAZ'="@"&(+DAZ>0) D ARCHIVE^R1ACNWKV(ETYPE,DAZ)
+  .Q
+  .;
+  I $$GETREQ^R1UTCSPZ("btnDelClin")]"" D
+  .N DA,ARHDFDA,ARHDMSG,ARHDMSGS,R1ACNDA,R1ACNME,R1ACNCLN,REF,R1ACTST,ARHDINDX
+  .S (DA,ARHDFDA,ARHDMSG,ARHDMSGS,ARHDMSGS,R1ACNDA,R1ACNME,R1ACNCLN,REF,R1ACTST)=""
+  .I DA<1 S (DA,R1ACNDA)=$$GETREQ^R1UTCSPZ("cbxC1",1) I $T S R1ACTST=1 ;w/o bp
+  .I DA<1 S (DA,R1ACNDA)=$$GETREQ^R1UTCSPZ("cbxC2",1) I $T S R1ACTST=1 ;w bp
+  .I DA<1 Q
+  .S REF=$NA(^DIZ(612418,DA,0)) I R1ACTST=1 D
+  ..D LOCK^DILF(REF) 
+  ..;*** Got lock, attempt save
+  ..S R1ACNME="",R1ACNME=$$GET1^DIQ(612418,DA,.01,"")
+  ..K ARHDFDA S ARHDFDA(612418,DA_",",.01)="@" D FILE^DIE("","ARHDFDA","ARHDMSG")
+  ..L -^DIZ(612418,R1ACNDA)
+  ..S DIK="DIZ(612418,",DA=R1ACNDA,DIK(1)="23^C" D EN2^DIK
+  ..S (ARHDMSG,ARHDMSGS)=""
+  ..S ARHDMSG=$G(R1ACNME)_" CrossWalk Clinic Deleted."
+  ..D MSG^DIALOG("AE",.ARHDMSGS,70,0)
+  ..S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)=""
+  ..W !,"<script type=""text/javascript"">"
+  ..W !,"alert("
+  ..S ARHDINDX=0
+  .. F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+  ... W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX))
+  ... W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");")
+  ... Q
+  .. W !,"</","script>"
+  ..D CLEAN^DILF
+  ..W !,"<script type=""text/javascript"">"
+  ..W "window.location.href=window.location.href"
+  ..W !,"</","script>"
+  ..Q
+  .Q
+  ;
+  I $$GETREQ^R1UTCSPZ("btn2Save")]"" D
+  .N R1ACFLD,ARHDIENS,ARHDMSG,ARHDMSGS,CBXT,DA
+  .S (R1ACFLD,ARHDIENS,ARHDMSG,ARHDMSGS,CBXT)=""
+  .S ARHDIENS=$$GETREQ^R1UTCSPZ("edtType",1)
+  .S CBXT=$$GETREQ^R1UTCSPZ("cbxT",1) ;Post Card Type
+  .S R1ACFLD=$S(CBXT=1:"4",CBXT=2:"9",CBXT=3:"10",CBXT=4:"11",CBXT=5:"12",CBXT=6:"13",CBXT=7:"14",CBXT=8:"15",CBXT=9:"16",CBXT=10:"17",CBXT=11:"18",CBXT=12:"19",CBXT=13:"20",CBXT=14:"21",CBXT=15:"22",1:"")
+  .S DA=""
+  .I $$GETREQ^R1UTCSPZ("cbxC1",1)'>0&($$GETREQ^R1UTCSPZ("cbxC2",1)'>0) D SAVE2^R1ACNWKY(ARHDIENS,R1ACFLD) Q
+  .I $$GETREQ^R1UTCSPZ("cbxC1",1)>0 S DA=$$GETREQ^R1UTCSPZ("cbxC1",1) D SAVEDATA^R1ACNWKY(DA,R1ACFLD) Q
+  .I $$GETREQ^R1UTCSPZ("cbxC2",1)>0 S DA=$$GETREQ^R1UTCSPZ("cbxC2",1) D SAVEDATA^R1ACNWKY(DA,R1ACFLD) Q
+  .Q
+  ; *** User clicked the "Logout" button
+  I $$GETREQ^R1UTCSPZ("btnLogout")]"" D
+  .D LOGOUT^R1UTCSP2
+  . W !,"<script type=""text/javascript"">"
+  . W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+  . W !,"</","script>"
+  . Q
+  ;
+  </script>
+
+<!-- ########## Event handlers ########## -->
+<!--
+<script language="cache" method="OnTimeout" arguments="" returntype="">
+  D LOGOUT^R1UTCSP2
+  W !,"<script type=""text/javascript"">" ;JavaScript to redirect
+  W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+  W !,"</","script>" ; Cannot have a closing script tag in a script
+</script>
+
+<script language="cache" method="OnEndSession" arguments="" returntype="">
+  D LOGOUT^R1UTCSP2
+</script>
+-->
+<!-- ########## Application methods ########## -->
+
+<script language="cache" method="GetDUZ" arguments="" returntype="%String">
+  Q +$$GETSES^R1UTCSPZ(DUZ)
+</script>
+
+<script language="cache" method="GetSTA1" arguments="ARHDFLD:%String" returntype="%String">
+   N STA,STAT
+   S (STA,STAT)=""
+   D SETDUZ^R1UTCSPZ
+   S STAT=$G(DUZ(2)) S STA=$$GET1^DIQ(4,$G(STAT),.01)
+   Q $G(STA)
+</script>
+
+
+<script language="cache" method="GetCIEN" arguments="" returntype="%String">
+  N DA S DA=""
+  S DA=$$GETREQ^R1UTCSPZ("cbxC2")
+  I DA="@" S DA=$$GETREQ^R1UTCSPZ("cbxC1")
+  Q $G(DA) 
+</script>
+
+
+<script language="cache" method="BBX" arguments="ARHDFLD:%String" returntype="%String">
+  N X,U,WP,I
+  S (X,U,WP,I)=""
+  S U="^",X=$$GET1^DIQ(612418,..GetCIEN(),4,,"WP")
+  F I=1:1:9 I $D(WP(I)) S WP=$G(WP)_WP(I)
+  Q $G(WP(ARHDFLD))
+</script>
+
+
+<script language="cache" method="GetClinics1" arguments="" returntype="%String" > 
+  ; *** Build a set of <option> tags for a pointer field 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  W !,"Clinic Name:  ",..OptionTag1("@","---Blank---","")
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxC1","")
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(612418,"","@;.01","P","","","","","I $$CLIN1^R1ACNWKY(Y)=1","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  . W !,..OptionTag1(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script> 
+<script language="cache" method="OptionTag1" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+</script>
+
+<script language="cache" method="GetClinics2" arguments="" returntype="%String" > 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S ( ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  W !,"Clinic Name:  ",..OptionTag2("@","---Blank---","")
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxC2","")
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(612418,"","@;.01","P","","","","","I $$CLIN2^R1ACNWKY(Y)=1","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  . W !,..OptionTag2(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script> 
+
+<script language="cache" method="OptionTag2" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+</script>
+
+ <script language="cache" method="GetType" arguments="" returntype="%String" > 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxT",)
+  W !,"Select Post Card:  ",..OptionTag3("@","---Blank---","") 
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(612418.4,"","@;.01","P","","","","","","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  . W !,..OptionTag3(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script>
+ 
+<script language="cache" method="OptionTag3" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+</script>
+
+ <script language="cache" method="GetEType" arguments="" returntype="%String" > 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  W !,"Select Existing Type:  ",..OptionTag4("@","---Blank---","")
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxEType") 
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(612418.1,"","@;.01","P","","","","","I $$BP^R1ACNWKY(Y)=1","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  . W !,..OptionTag4(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script>
+ 
+<script language="cache" method="OptionTag4" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+</script>
+
+<script language="cache" method="GetTemp" arguments="" returntype="%String"> 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("viewType",1)
+  W !,"Template Name:  ",..OptionTag("@","---Blank---","")
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(612418.1,"","@;.01","P","","","","","","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:'ARHDINDX  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  .W !,..OptionTag(ARHDINT,ARHDEXT,ARHDDEF)
+  .Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script> 
+
+<script language="cache" method="OptionTag" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  ; *** Output an option tag
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+  </script>
+
+<script language="cache" method="GetValue4" arguments="ARHDFLD:%String" returntype="%String">
+  N X,U,WP,I
+  S (X,U,WP,I)=""
+  S U="^",X=$$GET1^DIQ(612418,..GetCIEN(),4,,"WP")
+  F I=1:1:9 I $D(WP(I)) S WP=$G(WP)_WP(I)
+  Q WP
+</script>
+
+<script language="cache" method="GetValue3" arguments="ARHDFLD:%String" returntype="%String">
+  N Z,X,U
+  S (Z,X,U)=""
+  S U="^",X=$$GET1^DIQ(612418,..GetCIEN(),ARHDFLD)
+  I X="",ARHDFLD=5 S X=+$P(^SC(..GetCIEN(),0),U,4),X=$P($G(^DIC(4,X,1)),U)
+  I X="",ARHDFLD=6 S Z=+$P(^SC(..GetCIEN(),0),U,4),X=$P($G(^DIC(4,Z,1)),U,2) I X="" S X=$P($G(^DIC(4,Z,1)),U,3)_", "_$P(^DIC(5,$P($G(^DIC(4,Z,0)),U,2),0),U,2)_"  "_$P($G(^DIC(4,Z,1)),U,4)
+  Q X
+</script>
+
+<script language="cache" method="GetValue2" arguments="ARHDFLD:%String" returntype="%String">
+  Q $$GET1^DIQ(612418,..GetCIEN(),ARHDFLD)
+</script>
+
+
+<script language="cache" method="GetValue" arguments="ARHDFLD:%String,ARHDFLG:%String" returntype="%String">
+  Q $$GET1^DIQ(200,..GetDUZ(),ARHDFLD,$G(ARHDFLG))
+</script>
+
+<script language="cache" method="ViewType" arguments="ARHDFLD:%String" returntype="%String">
+  N ARHDDEF,ARHDDOF
+  S (ARHDDEF,ARHDDOF)=""
+  S ARHDDEF=$$GET1^DIQ(612418,..GetCIEN(),23,"I")
+  I ARHDDEF="" S ARHDDOF=$$GETREQ^R1UTCSPZ("GetEType")
+  I ARHDDOF'="" Q ARHDDOF
+  I ARHDDEF="" Q ARHDDEF
+  Q $$GET1^DIQ(612418.1,ARHDDEF,".01","E")
+ </script>
+ 
+<script language="cache" method="SetOfCodes" arguments="ARHDFLD:%String" returntype="%String">
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINT,ARHDPIEC,ARHDSET
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINT,ARHDPIEC,ARHDSET)=""
+  W !,..OptionTag("@","---Blank---","")
+  S ARHDDEF=$$GET1^DIQ(200,..GetDUZ(),ARHDFLD,"I")
+  S ARHDSET=$$GET1^DID(200,ARHDFLD,"","POINTER")
+  F ARHDPIEC=1:1 S ARHDDATA=$P(ARHDSET,";",ARHDPIEC) Q:ARHDDATA=""  D
+  . S ARHDINT=$P(ARHDDATA,":",1)
+  . S ARHDEXT=$P(ARHDDATA,":",2)
+  . W !,..OptionTag(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  W !
+  Q ""
+</script>
+
+<script language="cache" method="Pointer" arguments="ARHDFLD:%String" returntype="%String">
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT,ARHDFILE
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT,ARHDFILE)=""
+  W !,..OptionTag("@","---Blank---","")
+  S ARHDDEF=$$GET1^DIQ(200,..GetDUZ(),ARHDFLD,"I")
+  K ^TMP("DILIST",$J)
+  S ARHDFILE=$$GET1^DID(200,ARHDFLD,"","SPECIFIER")
+  S ARHDFILE=$TR(ARHDFILE,$TR(ARHDFILE,"0123456789."))
+  D LIST^DIC(ARHDFILE,"","@;.01","P")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  . W !,..OptionTag(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script>
+
+</head>
+
+<!-- Call the SetFocus script once the page is loaded -->
+<body onload="javascript:return SetFocus();">
+<form name="frmEditXeroxWalk1" method="post" action="#(..Link(%request.URL))#"> 
+<table border='1' id='table2' cellspacing='0' cellpadding='6' width='810' bordercolor='BLACK'><tr>
+<td height='2' bgcolor='#f0f8ff' style='color: #000000; border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px' colspan='2'>
+
+<h2><tr><td><font face="Arial Narrow" size=2> 1) Click to Pick Clinic W/O BP:</font>  
+<select name="cbxC1" onChange="javascript:onChange1()" tabindex="4">#(..GetClinics1())#</select></td>
+<td><font face="Arial Narrow" size=2> 3) View/Edit CrossWalk Clinic W/Attached BP:</font>
+<select name="cbxC2" SELECT STYLE="Width:250" Width="250"  onChange="javascript:onChange2()" tabindex="1">#(..GetClinics2())#</select></td>
+<td><font face="Arial Narrow" size=2>X-WalkClinicIEN:  <input type="text" readonly="readonly" title="computer number of clinic" style="color: #000000; background-color:#f0f8ff" value="#(..GetCIEN())#" maxlength="10" size="2" name="ClinicName"></font>
+<input type="submit" name="btnDelClin" width=90px onClick="javascript:onClick6()" value="Delete CrossWalkClinic" title="Delete all settings for this PostCard Clinic" tabindex="3" /></td>
+<tr><td><font face="Arial Narrow" size=2> 2a) Create NEW Boiler Plate:</font>
+<input type="text" maxlength="30" size="30" tabindex="2" name="edtType" title="type in name of new boiler plate" value="#($$GETREQ^R1UTCSPZ("edtType"))#">
+<input type="submit" name="btnSaveType" onClick="javascript:onClick5()" value="2b) Save New Boiler Plate" width=90px title="Boiler Plate may be created w/o selecting a clinic"tabindex="3" /></td>
+<td><font face="Arial Narrow" size=2> 4) Select/Edit EXISTING Boiler Plate:  <select name="cbxEType" onChange="javascript:onChange4()"  tabindex="5">#(..GetEType())#"</select></font></td> 
+<td><font face="Arial Narrow" size=2>Display X-Walk Clinic BoilerPlate:</font>
+<input type="text" readonly="readonly" style="color: #000000; background-color:#f0f8ff" maxlength="30" size="30" name="viewType" title="template for 15 memo boxes" value="#(..ViewType())#"></br>
+</tr>
+</tbody>
+</table>
+<table border='2' id='table3' cellspacing='0' cellpadding='6' width='767' bordercolor='BLACK'><tr>
+<td height='2' bgcolor='#f0f8ff' style='color: #000000; border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px' colspan='2'>
+<tr><td>
+<font color="#000000" size="2">Must select a clinic from cell '1)' or '3)' above.  If selecting clinic from '1)', then select BP from either '2)' or '4)'.  If selecting clinic from '3)' then select associated BP in '4)'.  Next select Post Card Type from List Box below. Blue Memo Box will open for editing.  Click 'Save Boiler Plate' button when finished.</font></center>
+</br>5) Select Post Card:  
+<select name="cbxT" onChange="javascript:onChange3()" tabindex="6">#(..GetType())#</select>
+
+</br><center><font face="Arial Rounded MT Bold" size="2" color="#000000">Blue Box Instructions:</font>
+</br><font face="Arial Narrow" color="#000000" size="2">Blue Memo Box is sized appropriately for input: 63 characters wide by 9 rows.  Click 'ENTER' key at end of each line to format text.  Click 'Save Boiler Plate' button below blue box to file your new/edited entry. </font></center></br>
+Post Card Selection:  #<input type="text" style="color: #000000; background-color:#f0f8ff" name="template" title="computer number of 1 boiler plate for clinic selected" value="#($$GETREQ^R1UTCSPZ("cbxT"))#" size="2">
+<input type="submit" name="btnLogout" value="Logout" title="log out of application" tabindex="24"/></br>
+<script language="cache" runat="server">
+K ^XTMP("R1ACTMP")
+N CLINIC,CLIN1,ARHDIENS,CBXT,NBP,ARHDIENS,R1ACFLD,ONE,TWO,THREE,FOUR,FIVE
+S CLIN1="",CLIN1=$$GETREQ^R1UTCSPZ("cbxC1",1) ;IEN of Clinic w/o BP
+S CLINIC="",CLINIC=$$GETREQ^R1UTCSPZ("cbxC2",1) ;IEN of Clinic w/BP
+S ARHDIENS="",ARHDIENS=$$GETREQ^R1UTCSPZ("cbxEType",1) ;IEN of Existing BP
+S NBP="",NBP=$$GETREQ^R1UTCSPZ("edtType",1) ;IEN of NEW BP
+S CBXT="",CBXT=$$GETREQ^R1UTCSPZ("cbxT",1) ;Post Card Type
+S ^XTMP("R1ACTMP")=ARHDIENS_U_CBXT_U_CLINIC_U_CLIN1_NBP
+S R1ACFLD=""
+S R1ACFLD=$S(CBXT=1:"4",CBXT=2:"9",CBXT=3:"10",CBXT=4:"11",CBXT=5:"12",CBXT=6:"13",CBXT=7:"14",CBXT=8:"15",CBXT=9:"16",CBXT=10:"17",CBXT=11:"18",CBXT=12:"19",CBXT=13:"20",CBXT=14:"21",CBXT=15:"22",1:"")
+S ONE="",ONE=$P(^XTMP("R1ACTMP"),U) ;IEN of Exist BP
+S TWO="",TWO=$P(^XTMP("R1ACTMP"),U,2) ;PC Type
+S THREE="",THREE=$P(^XTMP("R1ACTMP"),U,3) ;IEN Clin w/BP
+S FOUR="",FOUR=$P($G(^XTMP("R1ACTMP")),U,4) ;IEN Clin w/o BP
+S FIVE="",FIVE=$P($G(^XTMP("R1ACTMP")),U,5) ;IEN new BP
+I ONE'="@"&(TWO'="@")&(THREE'="@") I $G(^XTMP("R1ACTMP"))]"" D ^R1ACNWKY K ^XTMP("R1ACTMP") 
+W "</br></br>"
+</script>
+
+ <script language="Cache" runat="server">
+D BTM1^R1ACNLNK
+</script>
+ </tbody>
+ </table>
+ </table>
+ </center>
+ </form>
+ </body>
+ </body>
+ </html>

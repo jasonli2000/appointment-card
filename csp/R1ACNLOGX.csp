@@ -1,0 +1,54 @@
+#($$DOCTYPE^R1UTCSPW)#
+<!version 3.0; Print Appointment PostCards; Build 1; April 2011>
+<html>
+<head>
+<csp:class super="%CSP.Page,R1AC.Subclass,%CSP.Error" private="1">
+<script language="cache" runat="server">
+ N ARHDROOT S ARHDROOT=""
+ S ARHDROOT=$$GETROOT^R1UTCSPX("",1)
+ D SETUP^R1UTCSPX($$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")),..%ClassName(1))
+ D METATAGS^R1UTCSPY(ARHDROOT,"",$$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")))
+ D STYLESHT^R1UTCSPW(.ARHDROOT)
+ D DISPLAY^R1UTCSPX(.ARHDROOT)
+</script>
+<script language="cache" method="OnPreHTTP" arguments="" returntype="%Boolean">
+ Q 1
+</script>
+<script language="cache" method="OnTimeout" arguments="" returntype="">
+  ;D SETUP^R1UTCSPX()
+  ;K @$$XTMPROOT^R1ACNZ2
+  D LOGOUT^R1UTCSP2
+  Q
+</script>
+<script language="cache" method="OnEndSession" arguments="" returntype="">
+  ;D SETUP^R1UTCSPX()
+  ;K @$$XTMPROOT^R1ACNZ2
+  D LOGOUT^R1UTCSP2
+  Q
+</script>
+</head>
+<body>
+<br />
+<script language="cache" runat="server">
+ N ARHDDBUG,ARHDETXT,ARHDROOT,ARHDURL
+ D DT^DICRW ;%=Date/Time
+ D SETDUZ^R1UTCSPZ
+ D ERRTRAP^R1UTCSPW
+ D DECOMPER^R1UTCSPZ(.ARHDETXT)
+ D DISPERR^R1UTCSPZ(.ARHDETXT)
+ S ARHDURL="R1ACNXWK0.CSP"
+ S ARHDDBUG=$$GETPARAM^R1ACNZ2("R1AC ENABLE DEBUGGING")
+ S ARHDROOT=$$GETROOT^R1UTCSPX("",1)
+ D DEBUG^R1UTCSPZ(ARHDDBUG)
+ D POPUPERR^R1UTCSPW(ARHDROOT,ARHDURL,0,'ARHDDBUG)
+ D DISPLAY^R1UTCSPX(ARHDROOT)
+ D LOGOUT^R1UTCSP2
+</script>
+
+<script language="cache" runat="server">
+W !,"<script type=""text/javascript"">" ;
+W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+W !,"</","script>" ;
+</script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!version 3.0; Print Appointment PostCards; Build 1; April 2011>
+<html>
+<csp:class super="%CSP.Page,R1AC.Subclass" private="1" errorpage="r1acnlog.csp">
+<title>PostCard Cross Walk for VistA Scheduling Letters 9 V3.0</title>
+
+<head bgcolor='#FFFFFF' topmargin="0">
+<div id="container-header">
+</div>
+<table border="1" cellspacing="0" cellpadding="6" width="767" bordercolor="#1E2D54">
+<tr>
+<td height="20" bgcolor="#f0f8ff" style="border-left-style: solid; border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px" colspan="3">
+<p align="center"><b><font color="#000000" size="4" width="767" face="Arial">6) Submit Over-ride Defaults for Post Card Type v3.0<br>Region
+<input type ="text" style="color:  #000000; background-color: #f0f8ff" p align="center" maxlength="1" name="REG" value="#(..GetREG())#" size="1">
+<b><font color="#000000" size="4" face="Arial">- VAMC:
+<input type ="text" style="color:  #000000; background-color: #f0f8ff" p align="center" maxlength="30" name="STAT" value="#(..GetSTA1())#" size="30"></b></center>
+</font>
+
+<!-- ########## Application / page setup ########## -->
+
+<script type="text/javascript">
+function onChange2() {
+document.forms['frmEditXeroxWalk9'].elements['cbxCred'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk9.submit();
+return (true); }
+</script>
+
+<script type="text/javascript">
+function onChange3() {
+document.forms['frmEditXeroxWalk9'].elements['cbxT1'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk9.submit();
+return (true); }
+</script>
+
+<script type="text/javascript">
+function onChange4() {
+document.forms['frmEditXeroxWalk9'].elements['cbxT2'].selectedIndex>'0';
+document.body.style.cursor="wait";
+document.frmEditXeroxWalk9.submit();
+return (true); }
+</script>
+
+<script type="text/javascript">
+function onClick5() {
+document.body.style.cursor="wait";}
+</script>
+
+<script language="cache" runat="server">
+  D DT^DICRW ;%=Date/Time
+  S ARHDROOT=$$GETROOT^R1UTCSPX("",1)
+  D SETUP^R1UTCSPX($$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")),$$%PackageName_"."_$$%ClassName(0)) ; Setup environment
+  D METATAGS^R1UTCSPY(.ARHDROOT,"",$$DTIME^XUP($$GETSES^R1UTCSPZ("DUZ")))
+  D SETFOCUS^R1UTCSPX(.ARHDROOT)
+  D DISPLAY^R1UTCSPX(.ARHDROOT)
+</script>
+<!-- ########## Logout and save code ########## -->
+
+<script language="cache" method="GetREG" arguments="ARHDFLD:%String" returntype="%String">
+   N REG S REG=""
+   S REG=$$GET1^DIQ(612418.5,1,7.9)
+   Q $G(REG)
+</script>
+
+<script language="cache" runat="server">
+  I $$GETREQ^R1UTCSPZ("btnLogout")]"" D
+  .D LOGOUT^R1UTCSP2
+  . W !,"<script type=""text/javascript"">"
+  . W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+  . W !,"</","script>"
+  . Q
+  ;
+  I $$GETREQ^R1UTCSPZ("cbxT1")]"" D
+  .N IEN,IEN1,IEN11,ARHDATTR
+  .S (IEN,IEN1,IEN11,ARHDATTR)=""
+  .S IEN=$$GETREQ^R1UTCSPZ("cbxT1",1)
+  .S ARHDATTR("name")="cbxT1"
+  .S ARHDATTR("value")=IEN
+  .D SET^R1UTCSPX("YYY",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  .S IEN1=$P(YYY(1),"value=",2)
+  .S IEN1=$P(IEN1," />") S IEN1=$P(IEN1,"""",2),IEN11=$P(IEN1,"""")
+  .Q
+  ;
+  I $$GETREQ^R1UTCSPZ("cbxCred")]"" D
+  .N DA,ARHDATTR 
+  .S (DA,ARHDATTR)=""
+  .S DA=$$GETREQ^R1UTCSPZ("cbxCred",1)
+  .S ARHDATTR("name")="cbxCred"
+  .S ARHDATTR("value")=DA
+  .D SET^R1UTCSPX("XXX",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  .S DA=$P(XXX(1),"value=",2)
+  .S DA=$P(DA," />") S DA=$P(DA,"""",2),DA=$P(DA,"""")
+  .Q
+  ;
+  I $$GETREQ^R1UTCSPZ("cbxT2")]"" D
+  .N IEN,IEN2,IEN22,ARHDATTR 
+  .S (IEN,IEN2,IEN22,ARHDATTR)=""
+  .S IEN=$$GETREQ^R1UTCSPZ("cbxT2",1)
+  .S ARHDATTR("name")="cbxT2"
+  .S ARHDATTR("value")=IEN
+  .D SET^R1UTCSPX("ZZZ",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  .S IEN2="",IEN2=$P(ZZZ(1),"value=",2)
+  .S IEN2="",IEN2=$P(IEN2," />") S IEN2=$P(IEN2,"""",2),IEN22=$P(IEN2,"""")
+  .Q
+  ;
+  I $$GETREQ^R1UTCSPZ("btnSaveMatch")]"" D
+  .I $$GETREQ^R1UTCSPZ("btnSaveMatch",1)']"" Q
+  .N ARHDATTR,ARHDIEN,ARHDERR,ARHDFDA,ARHDIENS,ARHDMSG,ARHDMSGS,DA,NMATCH,NNMATCH,IEN2,ARHDINDX
+  .S (ARHDATTR,ARHDIEN,ARHDFDA,ARHDIENS,ARHDMSG,ARHDMSGS,DA,NMATCH,NNMATCH,IEN2,ARHDINDX)=""
+  .S ARHDERR=0
+  . S NMATCH="",NMATCH=$$GETREQ^R1UTCSPZ("edtMatch",1)
+  . Q:NMATCH=""
+  . S ARHDATTR("name")="edtMatch"
+  . S ARHDATTR("value")=NMATCH
+  . I $G(NMATCH)']"" Q  ;No Match String input
+  . S IEN2=$$GETREQ^R1UTCSPZ("cbxT2",1)
+  . I $G(IEN2)']"" Q  ;No Post Card Type Selected
+  . D SET^R1UTCSPX("TTT",$$INPUTTAG^R1UTCSPY("hidden",.ARHDATTR))
+  . S NMATCH=$P(TTT(1),"value=",2)
+  . S NNMATCH=$P(NMATCH," />") S NMATCH=$P(NMATCH,"""",2),NNMATCH=$P(NMATCH,"""")
+  . S NMATCH="",NMATCH=$$GETREQ^R1UTCSPZ("edtMatch",1)
+  . S (DA,ARHDIENS)="",(DA,ARHDIENS)=IEN2_","
+  . S ARHDFDA(612418.4,ARHDIENS,.01)=DA
+  . I $G(IEN2)>0 K ARHDFDA S ARHDFDA(612418.4,ARHDIENS,3)=$G(NMATCH)
+  . S ARHDIEN(DA)=DA
+  . D UPDATE^DIE("","ARHDFDA","ARHDIEN")
+  . D
+  .. S (ARHDMSG,ARHDMSGS)=""
+  .. S ARHDMSG=$G(NNMATCH)_" PATTERN MATCH HAS "_$S(ARHDERR>0:"NOT ",1:"")_"BEEN SAVED."
+  .. D MSG^DIALOG("AE",.ARHDMSGS,70,0)
+  .. S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)=""
+  .. W !,"<script type=""text/javascript"">"
+  .. W !,"alert("
+  .. S ARHDINDX=0
+  .. F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+  ... W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX))
+  ... W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");")
+  ... Q
+  .. W !,"</","script>"
+  .. D CLEAN^DILF
+  .. Q
+  .Q
+  ;
+  I $$GETREQ^R1UTCSPZ("btnSave")]"" D
+  .N ARHDFDA,ARHDIENS,DA,ARHDMSG,ARHDMSGS,ARHDINDX,REF
+  .S (ARHDFDA,ARHDIENS,DA,ARHDMSG,ARHDMSGS,ARHDINDX,REF)=""
+  .S ARHDIENS=$$GETREQ^R1UTCSPZ("cbxT1",1)
+  .I $G(ARHDIENS)="@" Q  ;No PostCard Type selected
+  .S DA=$$GETREQ^R1UTCSPZ("cbxCred",1)
+  .S REF=$NA(^DIZ(612418.4,ARHDIENS,0))
+  .D LOCK^DILF(REF) I $T D
+  ..; *** Got lock, attempt to save
+  ..I $G(^TMP("R1ACLCK",$J,ARHDIENS))']"" S ^TMP("R1ACLCK",$J,ARHDIENS)=..GetDUZ()
+  ..S ARHDFDA(612418.4,ARHDIENS_",",2)=$G(DA) D FILE^DIE("","ARHDFDA","ARHDMSGS")
+  ..L -^DIZ(612418.4,ARHDIENS,0) I $G(^TMP("R1ACLCK",$J,ARHDIENS))]"" K ^TMP("R1ACLCK",$J,ARHDIENS)
+  ..S ARHDMSG="",ARHDMSG="Your DEFAULT Post Card Type Data has been submitted to VistA."
+  ..D MSG^DIALOG("AE",.ARHDMSGS,70,0)
+  ..D CLEAN^DILF
+  ..Q
+  .E  D
+  ..; *** No lock, no save
+  ..S ARHDMSG="Your DEFAULT Post Card Type Data has ***NOT*** been submitted."
+  ..Q
+  .S ARHDMSGS(.1)=ARHDMSG,ARHDMSGS(.2)=""
+  .W !,"<script type=""text/javascript"">"
+  .W !,"alert("
+  .S ARHDINDX=0
+  .F  S ARHDINDX=$O(ARHDMSGS(ARHDINDX)) Q:ARHDINDX'>0  D
+  ..W !,$$QUOTEJS^R1UTCSPZ(ARHDMSGS(ARHDINDX))
+  ..W $S($O(ARHDMSGS(ARHDINDX))>0:" + '\n' + ",1:");")
+  ..Q
+  .W !,"</","script>"
+  .Q
+  Q
+ </script>
+ 
+<!-- ########## Event handlers ########## -->
+<!--script language="cache" method="OnTimeout" arguments="" returntype="">
+  D LOGOUT^R1UTCSP2
+  W !,"<script type=""text/javascript"">" ;JavaScript to redirect
+  W !,"window.location.replace('",$$GET1^DIQ(612418.5,1,5),"');"
+  W !,"</","script>" ; Cannot have a closing script tag in a script
+</script>
+
+<script language="cache" method="OnEndSession" arguments="" returntype="">
+  D LOGOUT^R1UTCSP2
+</script-->
+
+<!-- ########## Application methods ########## -->
+
+<script language="cache" method="GetDUZ" arguments="" returntype="%String">
+  Q +$$GETSES^R1UTCSPZ(DUZ)
+</script>
+
+<script language="cache" method="GetSTA1" arguments="ARHDFLD:%String" returntype="%String">
+   N STA,STAT S (STA,STAT)=""
+   D SETDUZ^R1UTCSPZ
+   S STAT=$G(DUZ(2)) S STA=$$GET1^DIQ(4,$G(STAT),.01)
+   Q $G(STA)
+</script>
+
+<script language="cache" method="GetCIEN" arguments="" returntype="%String">
+  N DA S DA=""
+  S DA=$$GETREQ^R1UTCSPZ("cbxT1")
+  I DA="@" S DA=$$GETREQ^R1UTCSPZ("cbxT2")
+  Q $G(DA)
+</script>
+
+<script language="cache" method="GetValue2" arguments="ARHDFLD:%String" returntype="%String">
+  N ARHDDEF,ARHDDOF
+  S (ARHDDEF,ARHDDOF)=""
+  S (ARHDDEF,ARHDDIF,ARHDDOF)=""
+  S ARHDDEF=$$GET1^DIQ(612418.4,..GetCIEN(),2)
+  I ARHDDEF="" S ARHDDOF=$$GETREQ^R1UTCSPZ("GetCredits")
+  I ARHDDOF'="" Q ARHDDOF
+  I ARHDDEF="" Q ARHDDEF
+  Q ARHDDEF
+</script>
+
+<script language="cache" method="GetValue22" arguments="ARHDFLD:%String" returntype="%String">
+  N ARHDDEF,ARHDDOF
+  S (ARHDDEF,ARHDDOF)=""
+  S ARHDDEF=$$GET1^DIQ(612418.4,..GetCIEN(),2,"I")
+  I ARHDDEF="" S ARHDDOF=$$GETREQ^R1UTCSPZ("GetCredits")
+  I ARHDDOF'="" Q ARHDDOF
+  I ARHDDEF="" Q ARHDDEF
+  Q $$GET1^DIQ(40.7,ARHDDEF,"1")
+</script>
+
+
+<script language="cache" method="GetValue3" arguments="ARHDFLD:%String" returntype="%String">
+  Q $$GET1^DIQ(612418.4,..GetCIEN(),3)
+</script>
+ 
+<script language="cache" method="GetCredits" arguments="" returntype="%String" > 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxCred")
+  W !,"Credit Stop:  ",..OptionTag2("@","---No Credit Stop Selected---","")
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(40.7,"","@;.01","P","","","","","","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  . W !,..OptionTag2(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script> 
+
+<script language="cache" method="OptionTag2" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+</script>
+
+<script language="cache" method="GetType1" arguments="" returntype="%String" > 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxT1")
+  W !,"Select Post Card:  ",..OptionTag3("@","---Blank---","") 
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(612418.4,"","@;.01","P","","","","","","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  . W !,..OptionTag3(ARHDINT,ARHDEXT,ARHDDEF)
+  . Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script>
+
+<script language="cache" method="OptionTag3" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+</script>
+
+<script language="cache" method="GetType2" arguments="" returntype="%String" > 
+  N ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT
+  S (ARHDDATA,ARHDDEF,ARHDEXT,ARHDINDX,ARHDINT)=""
+  S ARHDDEF=$$GETREQ^R1UTCSPZ("cbxT2")
+  W !,"Select Post Card:  ",..OptionTag3("@","---Blank---","")
+  K ^TMP("DILIST",$J)
+  D LIST^DIC(612418.4,"","@;.01","P","","","","","","","")
+  S ARHDINDX=0
+  F  S ARHDINDX=$O(^TMP("DILIST",$J,ARHDINDX)) Q:ARHDINDX'>0  D
+  . S ARHDDATA=$G(^TMP("DILIST",$J,ARHDINDX,0))
+  . S ARHDINT=$P(ARHDDATA,"^",1)
+  . S ARHDEXT=$P(ARHDDATA,"^",2)
+  .W !,..OptionTag4(ARHDINT,ARHDEXT,ARHDDEF)
+  .Q
+  K ^TMP("DILIST",$J)
+  W !
+  Q ""
+</script>
+
+<script language="cache" method="OptionTag4" arguments="ARHDINT:%String,ARHDEXT:%String,ARHDDEF:%String" returntype="%String">
+  N ARHDOPT S ARHDOPT=""
+  S ARHDOPT="<option value="""_ARHDINT_""""
+  I ARHDINT=ARHDDEF S ARHDOPT=ARHDOPT_" selected=""selected"""
+  S ARHDOPT=ARHDOPT_">"_..EscapeHTML(ARHDEXT)_"</option>"
+  Q ARHDOPT
+</script>
+
+</head>
+<!-- Call the SetFocus script once the page is loaded -->
+<body onload="javascript:return SetFocus();">
+<body bgcolor="#f0f8ff">
+<form name="frmEditXeroxWalk9" method="post" action="#(..Link(%request.URL))#">
+<tr> <td align="center" bgcolor="#f0f8ff">
+<b>To Define Post Cards: #2, #3, #5, #8, #12</b><br>
+- EITHER -
+</br></br>
+<b>1)</b>  Select Post Card Type: 
+<select name="cbxT1" onChange="javascript:onChange3()" tabindex="1">#(..GetType1())#</select>
+</br> Display Existing Credit Stop:
+<input type="text" maxlength="30" size="30" readonly="readonly" style="color: #000000; background-color:#f0f8ff"  name="viewCred" title="Displays default Credit Stop" value="#((..GetValue2(2)))#">
+AMIS Stop Code:
+<input type="text" maxlength="5" size="5" readonly="readonly" style="color: #000000; background-color:#f0f8ff"  name="viewCredZ" title="Displays AMIS Stop Code" value="#((..GetValue22(1)))#">
+</br> 1a) Select to Default to Credit Stop: 
+<select name="cbxCred" onChange="javascript:onChange2()" tabindex="2">#(..GetCredits())#</select>
+</br><input type="Submit" name="btnSave" title="Send to VistA for processing" value="1b) Save Credit Stop" tabindex="6" class="button" onclick="document.body.style.cursor='wait';"/>
+</br></br><b>- AND/OR -</b>
+</br></br>
+<b>2)</b> Select Post Card Type:
+<select name="cbxT2" onChange="javascript:onChange4()" tabindex="3">#(..GetType2())#</select>
+</br>2a) Type in Partial Name of Clinic to Match-On:
+</br>
+<input type="text" maxlength="30" size="30" tabindex="4" name="edtMatch" title="type in partial name of clinic" value="#(..GetValue3(3))#" >
+</br><input type="submit" name="btnSaveMatch" onClick="javascript:onClick5()" value="2b) Save Match-On String" title="Type in characters to match on all clinics" size="15" tabindex="5" />
+</br></br></br>
+</b>
+</br><font color='000000' style="color: #000000; background-color:#f0f8ff" size="3"> 3)  Click Appropriate Action:
+<input type="button" value="Refresh Page before Next Selection" title="clear drop down box & all memo boxes" onClick="window.location.href=window.location.href">
+<input type="submit" name="btnLogout" value="Logout" title="log out of application" /></center><p align="left">
+ <script language="Cache" runat="server">
+W "<color='f0f8ff'><font face='Arial Narrow' size='3'></b>"
+W "</br></br>"
+D BTM1^R1ACNLNK
+W "</hdr></td>"
+</script>
+</td></tr>
+</table>
+</table>
+</form>
+</body>
+</body>
+</html>
