@@ -1,21 +1,3 @@
-znspace "VISTA"
-
-VISTA>S DUZ=1 D Q^DIS DUZ=1 D Q^DI
-
-
-VA FileMan 22.0
-
-
-Select OPTION: 88  DATA DICTIONARY UTILITIES
-Select DATA DICTIONARY UTILITY OPTION: 11  LIST FILE ATTRIBUTES
- START WITH WHAT FILE: R1AC CROSSWALK// 612418612418  R1AC CROSSWALK
-                                          (0 entries)
-      GO TO WHAT FILE: R1AC CROSSWALK// 612418612418  R1AC CROSSWALK
-                                          (0 entries)
-      Select SUB-FILE: 
-Select LISTING FORMAT: STANDARD// 11  STANDARD
-Start with field: FIRST// 
-DEVICE: HOME;387;9999HOME;387;9999  TELNET
 STANDARD DATA DICTIONARY #612418 -- R1AC CROSSWALK FILE                                                                                                                                                                           FEB 27,2012@14:23:12  PAGE 1
 STORED IN ^DIZ(612418,  *** NO DATA STORED YET ***   SITE: PLA.ISC-WASH.MED.VA.GOV   UCI: VISTA,FOI                                                                                                                                                           
 
@@ -420,13 +402,3 @@ SORT TEMPLATE(S):
 FORM(S)/BLOCK(S):
 R1AC XWL1                     AUG 14, 2006@11:37  USER #0
   R1AC XEROX B1                 DD #612418
-
-
-
-Select DATA DICTIONARY UTILITY OPTION: 
-
-
-
-
-Select OPTION: 
-VISTA>HALT
