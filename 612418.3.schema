@@ -1,0 +1,180 @@
+znspace "VISTA"
+
+VISTA>S DUZ=3330 D Q^DIS DUZ=3330 D Q^DI
+
+
+VA FileMan 22.0
+
+
+Select OPTION: 88  DATA DICTIONARY UTILITIES
+Select DATA DICTIONARY UTILITY OPTION: 11  LIST FILE ATTRIBUTES
+ START WITH WHAT FILE: 612418.3612418.3  R1AC POSTCARD TRACKING
+                                          (0 entries)
+      GO TO WHAT FILE: R1AC POSTCARD TRACKING// 612418.3612418.3  R1AC POSTCARD TRACKING
+                                          (0 entries)
+      Select SUB-FILE: 
+Select LISTING FORMAT: STANDARD// 11  STANDARD
+Start with field: FIRST// 
+DEVICE: HOME;387;9999HOME;387;9999  TELNET
+STANDARD DATA DICTIONARY #612418.3 -- R1AC POSTCARD TRACKING FILE                                                                                                                                                                 MAR 22,2012@15:20:29  PAGE 1
+STORED IN ^DIZ(612418.3,  *** NO DATA STORED YET ***   SITE: PLA.ISC-WASH.MED.VA.GOV   UCI: VISTA,FOI                                                                                                                                                         
+
+DATA          NAME                  GLOBAL        DATA
+ELEMENT       TITLE                 LOCATION      TYPE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Tracks the VIPP Record creation by date of transmission for QA purposes.  
+
+
+              DD ACCESS: @
+           AUDIT ACCESS: @
+
+CROSS
+REFERENCED BY: POSTCARD CREATION DATE(B)
+
+612418.3,.01  POSTCARD CREATION DATE 0;1 DATE (Required)
+
+              INPUT TRANSFORM:  S %DT="E" D ^%DT S X=Y K:X<1 X S DINUM=X
+              LAST EDITED:      AUG 30, 2006 
+              HELP-PROMPT:      (No range limit on date) 
+              DESCRIPTION:
+                                Date the Post Card Transmission was created.  
+
+              TECHNICAL DESCR:
+                                Date the Post Card Transmission was created.  
+
+              NOTES:            XXXX--CAN'T BE ALTERED EXCEPT BY PROGRAMMER
+
+              CROSS-REFERENCE:  612418.3^B 
+                                1)= S ^DIZ(612418.3,"B",$E(X,1,30),DA)=""
+                                2)= K ^DIZ(612418.3,"B",$E(X,1,30),DA)
+
+
+612418.3,1    VIPP RECORD            1;0 Multiple #612418.31
+
+              DESCRIPTION:
+                                Numeric identifier for VIPP RECORD.  
+
+              TECHNICAL DESCR:
+                                Numeric identifier for VIPP RECORD.  
+
+
+612418.31,.01   VIPP RECORD            0;1 NUMBER (Multiply asked)
+
+                INPUT TRANSFORM:  K:+X'=X!(X>999999)!(X<0)!(X?.E1"."1N.N) X
+                LAST EDITED:      NOV 20, 2007 
+                HELP-PROMPT:      Type a Number between 0 and 999999, 0 Decimal Digits 
+                DESCRIPTION:
+                                  Numeric identifier for VIPP RECORD.  
+
+                TECHNICAL DESCR:
+                                  Numeric identifier for VIPP RECORD.  
+
+                CROSS-REFERENCE:  612418.31^B 
+                                  1)= S ^DIZ(612418.3,DA(1),1,"B",$E(X,1,30),DA)=""
+                                  2)= K ^DIZ(612418.3,DA(1),1,"B",$E(X,1,30),DA)
+
+
+612418.31,1     PATIENT                0;2 POINTER TO PATIENT FILE (#2)
+
+                LAST EDITED:      AUG 31, 2006 
+                HELP-PROMPT:      Patient (from #2) which Post Card is being sent to. 
+                DESCRIPTION:
+                                  Patient (from #2) which Post Card is being sent to.  
+
+                TECHNICAL DESCR:
+                                  Patient (from #2) which Post Card is being sent to.  
+
+
+612418.31,2     CLINIC                 0;3 POINTER TO HOSPITAL LOCATION FILE (#44)
+
+                LAST EDITED:      AUG 31, 2006 
+                HELP-PROMPT:      Clinic where patient is scheduled or needs to schedule an appointment. 
+                DESCRIPTION:
+                                  Clinic where patient is scheduled or needs to schedule an appointment.  
+
+                TECHNICAL DESCR:
+                                  Clinic where patient is scheduled or needs to schedule an appointment.  
+
+
+612418.31,3     APPT DATE/TIME         0;4 DATE
+
+                INPUT TRANSFORM:  S %DT="ET" D ^%DT S X=Y K:Y<1 X
+                LAST EDITED:      NOV 20, 2007 
+                HELP-PROMPT:      (No range limit on date) 
+                DESCRIPTION:
+                                  Date/Time of Appointment that patient is scheduled for.  
+
+                TECHNICAL DESCR:
+                                  Date/Time of Appointment that patient is scheduled for.  
+
+
+612418.31,4     POSTCARD TYPE          0;5 NUMBER
+
+                INPUT TRANSFORM:  K:+X'=X!(X>15)!(X<0)!(X?.E1"."1N.N) X
+                LAST EDITED:      NOV 20, 2007 
+                HELP-PROMPT:      Type a Number between 0 and 15, 0 Decimal Digits 
+                DESCRIPTION:      Number of Post Card Type consisting of the following: 
+                                   
+                                  1             Pre-Appt/ACA  [#1] 2             Comp & Pen  [#2] 3             Appt - Bring ???  [#3] 4             Appt Coming Up  [#4] 5             Phone Consult  [#5] 6             Annual Means Test: 30/60 day  [#6] 7 
+                                             Means Test:  0 day  [#7] 8             Mobile Svcs Appt  [#8] 9             Appt Loc Changed Alert  [#9] 10            No Show - Please Call Us  [#10] 11            Canceled Appt + New Appt Alert  [#11] 12     
+                                        Group Orientation Appt - Alert  [#12] 13            Cancel Appt/No Reschedule - Alert  [#13] 14            Fee Based Service at Non-VA Site  [#14] 15            Birthday [#15] 
+
+                TECHNICAL DESCR:  Number of Post Card Type consisting of the following: 
+                                   
+                                  1             Pre-Appt/ACA  [#1] 2             Comp & Pen  [#2] 3             Appt - Bring ???  [#3] 4             Appt Coming Up  [#4] 5             Phone Consult  [#5] 6             Annual Means Test: 30/60 day  [#6] 7 
+                                             Means Test:  0 day  [#7] 8             Mobile Svcs Appt  [#8] 9             Appt Loc Changed Alert  [#9] 10            No Show - Please Call Us  [#10] 11            Canceled Appt + New Appt Alert  [#11] 12     
+                                        Group Orientation Appt - Alert  [#12] 13            Cancel Appt/No Reschedule - Alert  [#13] 14            Fee Based Service at Non-VA Site  [#14] 15            Birthday [#15] 
+
+
+612418.31,5     USER REQUESTING PRINTOUT 0;6 POINTER TO NEW PERSON FILE (#200)
+
+                LAST EDITED:      AUG 31, 2006 
+                HELP-PROMPT:      IRMS Support Person who Tasks off FTP background job. 
+                DESCRIPTION:
+                                  IRMS Support Person who Tasks off FTP background job.  
+
+                TECHNICAL DESCR:
+                                  IRMS Support Person who Tasks off FTP background job.  
+
+
+612418.31,6     PROVIDER               0;7 POINTER TO NEW PERSON FILE (#200)
+
+                LAST EDITED:      JUL 15, 2009 
+                HELP-PROMPT:      Author/Dictator of TIU Note for Lab Letters 
+                DESCRIPTION:
+                                  Author/Dictator for TIU Notes for Lab Letters.  
+
+                TECHNICAL DESCR:
+                                  Author/Dictator for TIU Notes for Lab Letters.  
+
+
+
+
+
+      FILES POINTED TO                      FIELDS
+
+HOSPITAL LOCATION (#44)           VIPP RECORD:CLINIC (#2)
+
+NEW PERSON (#200)                 VIPP RECORD:USER REQUESTING PRINTOUT (#5)
+                                  PROVIDER (#6)
+
+PATIENT (#2)                      VIPP RECORD:PATIENT (#1)
+
+
+
+INPUT TEMPLATE(S):
+
+PRINT TEMPLATE(S):
+
+SORT TEMPLATE(S):
+
+FORM(S)/BLOCK(S):
+
+
+Select DATA DICTIONARY UTILITY OPTION: 
+
+
+
+
+Select OPTION: 
+VISTA>HALT

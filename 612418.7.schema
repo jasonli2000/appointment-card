@@ -1,0 +1,144 @@
+znspace "VISTA"
+
+VISTA>S DUZ=56821 D Q^DIS DUZ=56821 D Q^DI
+
+
+VA FileMan 22.0
+
+
+Select OPTION: 88  DATA DICTIONARY UTILITIES
+Select DATA DICTIONARY UTILITY OPTION: 11  LIST FILE ATTRIBUTES
+ START WITH WHAT FILE: 612418.7612418.7  R1AC POSTCARD RETURN ADDRESS
+                                          (0 entries)
+      GO TO WHAT FILE: R1AC POSTCARD RETURN ADDRESS// 612418.7612418.7  R1AC POSTCARD RETURN ADDRESS
+                                          (0 entries)
+Select LISTING FORMAT: STANDARD// 11  STANDARD
+Start with field: FIRST// 
+DEVICE: HOME;387;9999HOME;387;9999  TELNET
+STANDARD DATA DICTIONARY #612418.7 -- R1AC POSTCARD RETURN ADDRESS FILE                                                                                                                                                           MAR 22,2012@15:20:58  PAGE 1
+STORED IN ^DIZ(612418.7,  *** NO DATA STORED YET ***   SITE: PLA.ISC-WASH.MED.VA.GOV   UCI: VISTA,FOI                                                                                                                                                         
+
+DATA          NAME                  GLOBAL        DATA
+ELEMENT       TITLE                 LOCATION      TYPE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+              DD ACCESS: @
+           AUDIT ACCESS: @
+
+CROSS
+REFERENCED BY: MEDICAL CENTER DIVISION(AD), MEDICAL CENTER DIVISION(B)
+
+612418.7,.01  MEDICAL CENTER DIVISION 0;1 POINTER TO INSTITUTION FILE (#4) (Required)
+
+              INPUT TRANSFORM:  S DIC("S")="I $P($G(^DIC(4,+Y,99)),U)[$P($G(^DIC(4,$$KSP^XUPARAM(""INST""),99)),U),$$ACTIVE^XUAF4(+Y)" D ^DIC K DIC S DIC=$G(DIE),X=+Y K:Y<0 X S DINUM=X
+              LAST EDITED:      JUN 12, 2009 
+              HELP-PROMPT:      Enter the entry for the Over-rider Post Card Return Address 
+              DESCRIPTION:
+                                Pointer to INSTITUTION file.  Enter the entry for the Over-ride Return Address on the Post Card.  
+
+              TECHNICAL DESCR:
+                                Pointer to INSTITUTION file.  Enter the entry for the Over-ride Return Address on the Post Card.  
+
+              SCREEN:           S DIC("S")="I $P($G(^DIC(4,+Y,99)),U)[$P($G(^DIC(4,$$KSP^XUPARAM(""INST""),99)),U),$$ACTIVE^XUAF4(+Y)"
+              EXPLANATION:      Select child facilities
+              NOTES:            XXXX--CAN'T BE ALTERED EXCEPT BY PROGRAMMER
+
+              CROSS-REFERENCE:  612418.7^B 
+                                1)= S ^DIZ(612418.7,"B",$E(X,1,30),DA)=""
+                                2)= K ^DIZ(612418.7,"B",$E(X,1,30),DA)
+
+              CROSS-REFERENCE:  612418.7^AD^MUMPS 
+                                1)= I $D(^AUTTLOC(0))#2 N DIC,DD,DO,DINUM,DS S DIC="^AUTTLOC(",DIC(0)="",(X,DINUM)=DA D FILE^DICN
+                                2)= I $D(^AUTTLOC(0))#2 N DIK S DIK="^AUTTLOC(" D ^DIK
+                                3)= Needed to keep PCE location file in sync.
+                                This MUMPS cross reference is used to keep the PCE location file 
+
+
+
+612418.7,1    ADDR LINE 1            0;2 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>40!($L(X)<6) X
+              LAST EDITED:      MAR 12, 2008 
+              HELP-PROMPT:      Enter the free text 1st line Return Address 
+              DESCRIPTION:
+                                Enter the free text description of the first Address Line in the Over-rider Return Address for the Post Card.  
+
+              TECHNICAL DESCR:
+                                Enter the free text description of the first Address Line in the Over-rider Return Address for the Post Card.  
+
+
+612418.7,2    ADDR LINE 2            0;3 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>40!($L(X)<6) X
+              LAST EDITED:      MAR 12, 2008 
+              HELP-PROMPT:      Enter the 2nd line of the Return Address for the Post Card 
+              DESCRIPTION:
+                                Enter the free text description of the second Address Line in the Over-rider Return Address for the Post Card.  
+
+              TECHNICAL DESCR:
+                                Enter the free text description of the second Address Line in the Over-rider Return Address for the Post Card.  
+
+
+612418.7,3    CITY                   0;4 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<1) X
+              LAST EDITED:      MAR 12, 2008 
+              HELP-PROMPT:      Enter the free text City Return Address. 
+              DESCRIPTION:
+                                Enter the free text City Return Address.  
+
+              TECHNICAL DESCR:
+                                Enter the free text City Return Address.  
+
+
+612418.7,4    STATE                  0;5 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>2!($L(X)<2) X
+              LAST EDITED:      MAR 12, 2008 
+              HELP-PROMPT:      Enter the free text State Return Address. 
+              DESCRIPTION:
+                                Enter the free text State Return Address.  
+
+              TECHNICAL DESCR:
+                                Enter the free text State Return Address.  
+
+
+612418.7,5    ZIP                    0;6 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>10!($L(X)<5) X
+              LAST EDITED:      MAR 12, 2008 
+              HELP-PROMPT:      Enter the free text ZIP Return Address.  
+              DESCRIPTION:
+                                Enter the free text ZIP Return Address.  
+
+              TECHNICAL DESCR:
+                                Enter the free text ZIP Return Address. 
+
+
+
+      FILES POINTED TO                      FIELDS
+
+INSTITUTION (#4)                  MEDICAL CENTER DIVISION (#.01)
+
+
+
+INPUT TEMPLATE(S):
+
+PRINT TEMPLATE(S):
+
+SORT TEMPLATE(S):
+
+FORM(S)/BLOCK(S):
+R1AC POSTCARD RETURN ADDRESS  MAR 12, 2008@13:41  USER #0
+  R1AC 612418.7 B1              DD #612418.7
+
+
+
+Select DATA DICTIONARY UTILITY OPTION: 
+
+
+
+
+Select OPTION: 
+VISTA>HALT

@@ -1,0 +1,574 @@
+znspace "VISTA"
+
+VISTA>S DUZ=33076 D Q^DIS DUZ=33076 D Q^DI
+
+
+VA FileMan 22.0
+
+
+Select OPTION: 88  DATA DICTIONARY UTILITIES
+Select DATA DICTIONARY UTILITY OPTION: 11  LIST FILE ATTRIBUTES
+ START WITH WHAT FILE: 612418.5612418.5  R1AC POSTCARD PARAMETERS
+                                          (0 entries)
+      GO TO WHAT FILE: R1AC POSTCARD PARAMETERS// 612418.5612418.5  R1AC POSTCARD PARAMETERS
+                                          (0 entries)
+      Select SUB-FILE: 
+Select LISTING FORMAT: STANDARD// 11  STANDARD
+Start with field: FIRST// 
+DEVICE: HOME;387;9999HOME;387;9999  TELNET
+STANDARD DATA DICTIONARY #612418.5 -- R1AC POSTCARD PARAMETERS FILE                                                                                                                                                               MAR 22,2012@15:20:48  PAGE 1
+STORED IN ^DIZ(612418.5,  *** NO DATA STORED YET ***   SITE: PLA.ISC-WASH.MED.VA.GOV   UCI: VISTA,FOI                                                                                                                                                         
+
+DATA          NAME                  GLOBAL        DATA
+ELEMENT       TITLE                 LOCATION      TYPE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+              DD ACCESS: @
+           AUDIT ACCESS: @
+
+CROSS
+REFERENCED BY: NAME(B)
+
+612418.5,.01  NAME                   0;1 POINTER TO INSTITUTION FILE (#4) (Required)
+
+              LAST EDITED:      JUN 11, 2010 
+              HELP-PROMPT:      Name of INSTITUTION of Main VAMC. 
+              DESCRIPTION:
+                                This file should have 1 entry only - the name (from the Institution file) of the main VAMC which is running the software.  
+
+              TECHNICAL DESCR:
+                                This file should have 1 entry only - the name (from the Institution file) of the main VAMC which is running the software.  
+
+              CROSS-REFERENCE:  612418.5^B 
+                                1)= S ^DIZ(612418.5,"B",$E(X,1,30),DA)=""
+                                2)= K ^DIZ(612418.5,"B",$E(X,1,30),DA)
+
+
+612418.5,.02  POSTALSOFT SERVER      2;2 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<7) X
+              LAST EDITED:      SEP 18, 2006 
+              HELP-PROMPT:      Enter in the ip address of the postal soft server 
+              DESCRIPTION:
+                                Enter in the ip address of the postal soft server.  (Example: For Region 1 it is: vhamacappt.v21.med.va.gov) 
+
+              TECHNICAL DESCR:
+                                Enter in the ip address of the postal soft server.  (Example: For Region 1 it is: vhamacappt.v21.med.va.gov) 
+
+
+612418.5,.03  FTP USER               2;3 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>20!($L(X)<3) X
+              LAST EDITED:      SEP 19, 2006 
+              HELP-PROMPT:      Enter into this field the name of the ftp user. 
+              DESCRIPTION:
+                                Enter into this field the name of the ftp user.  For Region 1, it is the word "XEROX" concatinated with the 3 character med center identifier.  (Example:  XEROXMAC) 
+
+              TECHNICAL DESCR:
+                                Enter into this field the name of the ftp user.  For Region 1, it is the word "XEROX" concatinated with the 3 character med center identifier.  (Example:  XEROXMAC) 
+
+
+612418.5,.04  FTP PASSWORD           2;4 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>20!($L(X)<3) X S X=$$ENCRYP^XUSRB1(X)
+              LAST EDITED:      NOV 20, 2007 
+              HELP-PROMPT:      K:$L(X)>20!($L(X)<3) X S X=$$ENCRYP^XUSRB1(X) 
+              DESCRIPTION:
+                                Enter into this field the password for the ftp process.  There is an input transform to encrypt the password & a de-encryption on the receiving end.  
+
+              TECHNICAL DESCR:
+                                Enter into this field the password for the ftp process.  There is an input transform to encrypt the password & a de-encryption on the receiving end.  
+
+              NOTES:            XXXX--CAN'T BE ALTERED EXCEPT BY PROGRAMMER
+
+
+612418.5,.05  XEROX POSTCARD MAIL GROUP 2;6 POINTER TO MAIL GROUP FILE (#3.8)
+
+              LAST EDITED:      JAN 10, 2007 
+              HELP-PROMPT:      enter any mail group which they want to receive VistA e-mails 
+              DESCRIPTION:      Site may enter any mail group which they want to receive VistA e-mails regarding data viability in the CrossWalk.  Members of this mail group should include all ADPAC's for this package.  Here is an example of a mail
+                                message generated to this mailgroup: 
+                                 
+                                Subj: Xerox CrossWalk Clinic (11)-Blue Box error[#37436] 11/19/07@20:00 8 lines From: POSTMASTER  In 'WASTE' basket.   Page 1 
+                                --------------------------------------------------------------------------
+                                The CROSSWALK clinic entry zz!CARD-LANZER (FOLLOW/UP) 
+                                   has errors in the BLUE BOX.  
+                                 
+                                   Postcard blue boxes are empty!! 
+                                 
+                                   Postcards for this clinic will not be printed 
+                                     until at least one of the blue boxes information is filled in.  
+                                 
+                                Enter message action (in WASTE basket): Ignore// 
+
+              TECHNICAL DESCR:  Site may enter any mail group which they want to receive VistA e-mails regarding data viability in the CrossWalk.  Members of this mail group should include all ADPAC's for this package.  Here is an example of a mail
+                                message generated to this mailgroup: 
+                                 
+                                Subj: Xerox CrossWalk Clinic (11)-Blue Box error[#37436] 11/19/07@20:00 8 lines From: POSTMASTER  In 'WASTE' basket.   Page 1 
+                                --------------------------------------------------------------------------
+                                The CROSSWALK clinic entry zz!CARD-LANZER (FOLLOW/UP) 
+                                   has errors in the BLUE BOX.  
+                                 
+                                   Postcard blue boxes are empty!! 
+                                 
+                                   Postcards for this clinic will not be printed 
+                                     until at least one of the blue boxes information is filled in.  
+                                 
+                                Enter message action (in WASTE basket): Ignore// 
+
+
+612418.5,1    HOST FILE LOCATION     0;2 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<9) X
+              LAST EDITED:      OCT 13, 2006 
+              HELP-PROMPT:      RDPC disk logical specifying "scd_HFS$:[XEROX_POSTCARD]" location 
+              DESCRIPTION:      This is a location where the application can expect to find (2) subdirectories (INPUT & PCARD) that are used in postcard processing.  User changing this field should be able to verify that the subdirectories INPUT & PCARD
+                                exist in the specified location and if not to create them with WORLD access set to RWED.  
+
+              TECHNICAL DESCR:  This is a location where the application can expect to find (2) subdirectories (INPUT & PCARD) that are used in postcard processing.  User changing this field should be able to verify that the subdirectories INPUT & PCARD
+                                exist in the specified location and if not to create them with WORLD access set to RWED.  
+
+
+612418.5,2    LOG FILE LOCATION      2;1 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>50!($L(X)<7) X
+              LAST EDITED:      APR 05, 2007 
+              HELP-PROMPT:      Enter the VMS subdirectory where the log files will be stored. 
+              DESCRIPTION:
+                                Enter the VMS subdirectory where the log files will be stored.  
+
+              TECHNICAL DESCR:
+                                Enter the VMS subdirectory where the log files will be stored.  
+
+
+612418.5,3    PRE-APPOINTMENT SCAN DAYS 2;5 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>99)!(X<0)!(X?.E1"."1N.N) X
+              LAST EDITED:      NOV 20, 2007 
+              HELP-PROMPT:      The number of days in the future that the Pre-Appt card should print 
+              DESCRIPTION:      Enter the number of days the PRE_APPOINTMENT postcard should print from the date the scan is performed.  The default is 14 days.  This means that the when this scan is executed, it will print appointments out scheduled for
+                                the t+14 day.  Task runs daily, so will pick up each day's clinic appts.  Jobs running over the weekend or holiday will be printed on the next work day.  
+
+              TECHNICAL DESCR:  Enter the number of days the PRE_APPOINTMENT postcard should print from the date the scan is performed.  The default is 14 days.  This means that the when this scan is executed, it will print appointments out scheduled for
+                                the t+14 day.  Task runs daily, so will pick up each day's clinic appts.  Jobs running over the weekend or holiday will be printed on the next work day.  
+
+
+612418.5,3.1  CANCELLATION SCAN DAYS 2;7 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>99)!(X<0)!(X?.E1"."1N.N) X
+              LAST EDITED:      JAN 10, 2007 
+              HELP-PROMPT:      The number of days in the future that the CANCELLATION Card should print 
+              DESCRIPTION:      Enter the number of days the CANCELLATION postcard should print from the date the scan is performed.  The default is 14 days.  This means that when this scan is executed, it will print appointments which have been 
+                                cancelled by either the clinic or the patient for T+14 days only.  Task runs daily, so will pick up each day's clinic appts.  Jobs running over the weekend or holiday will be printed on the next work day.  
+
+              TECHNICAL DESCR:  Enter the number of days the CANCELLATION postcard should print from the date the scan is performed.  The default is 14 days.  This means that when this scan is executed, it will print appointments which have been 
+                                cancelled by either the clinic or the patient for T+14 days only.  Task runs daily, so will pick up each day's clinic appts.  Jobs running over the weekend or holiday will be printed on the next work day.  
+
+
+612418.5,3.2  NO-SHOW SCAN PAST DAYS 2;8 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>99)!(X<0)!(X?.E1"."1N.N) X
+              LAST EDITED:      JAN 10, 2007 
+              HELP-PROMPT:      Number of days that the NO-SHOW card should print.  Default is "2" days. 
+              DESCRIPTION:      Enter the number of days the NO-SHOW postcard should print from the date the scan is performed.  The default is 2 days.  This means that when the scan is executed, it will print NO-SHOWS out for appointments occurring on
+                                T-2 days.  Task runs daily, so will pick up each day's clinic appts.  Jobs running over the weekend or holiday will be printed on the next work day.  
+
+              TECHNICAL DESCR:  Enter the number of days the NO-SHOW postcard should print from the date the scan is performed.  The default is 2 days.  This means that when the scan is executed, it will print NO-SHOWS out for appointments occurring on
+                                T-2 days.  Task runs daily, so will pick up each day's clinic appts.  Jobs running over the weekend or holiday will be printed on the next work day.  
+
+
+612418.5,4    TRANSMISSION DATA RETENTION 2;9 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>365)!(X<30)!(X?.E1"."1N.N) X
+              LAST EDITED:      MAR 14, 2007 
+              HELP-PROMPT:      Number of days to keep the transmission data 
+              DESCRIPTION:      This field is used to determine how long the transmission data will be kept in the IRMS XEROX POSTCARD TRACKING FILE and IRMS XEROX POSTCARD PARAMETERS FILE.  
+                                 
+                                The R1ACS PURGE TRANSMISSION DATA option (Xerox Purge Transmission Data) will use this field.  If NULL, a default retention time will be 120 days.  
+
+              TECHNICAL DESCR:  This field is used to determine how long the transmission data will be kept in the IRMS XEROX POSTCARD TRACKING FILE and IRMS XEROX POSTCARD PARAMETERS FILE.  
+                                 
+                                The R1ACS PURGE TRANSMISSION DATA option (Xerox Purge Transmission Data) will use this field.  If NULL, a default retention time will be 120 days.  
+
+
+612418.5,5    DEFAULT HTTP LOGOUT PAGE 0;3 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>50!($L(X)<10) X
+              LAST EDITED:      MAR 14, 2007 
+              HELP-PROMPT:      The URL where the site would like  the user to be redirected to upon logout. 
+              DESCRIPTION:      Enter the URL where the site would like the user to be re-directed to upon logout.  Most sites have entered their Intranet site.  
+                                 
+                                For example:   DEFAULT HTTP LOGOUT PAGE: http://vaww.sf.med.va.gov/ 
+
+              TECHNICAL DESCR:  Enter the URL where the site would like the user to be re-directed to upon logout.  Most sites have entered their Intranet site.  
+                                 
+                                For example:   DEFAULT HTTP LOGOUT PAGE: http://vaww.sf.med.va.gov/ 
+
+
+612418.5,6    MEANS TEST CLINICS AT SITE 0;4 SET
+
+                                '1' FOR YES; 
+                                '0' FOR NO; 
+              LAST EDITED:      MAY 31, 2007 
+              HELP-PROMPT:      Answer "YES" if there are specific MEANS TEST CLINICS at this facility 
+              DESCRIPTION:
+                                Answer "YES" if there are specific MEANS TEST CLINICS at this facility to assist patients in completion of Annual Means Tests.  
+
+              TECHNICAL DESCR:
+                                Answer "YES" if there are specific MEANS TEST CLINICS at this facility to assist patients in completion of Annual Means Tests.  
+
+
+612418.5,7    MEANS TEST CONTACT PHONE # 0;5 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>20!($L(X)<7) X
+              LAST EDITED:      MAY 31, 2007 
+              HELP-PROMPT:      The site's Contact Phone Number for Means Test Questions & Forms. 
+              DESCRIPTION:
+                                Type in the site's contact phone number for Means Test Questions and forms.  
+
+              TECHNICAL DESCR:
+                                Type in the site's contact phone number for Means Test Questions and forms.  
+
+
+612418.5,7.5  LAST X-WALK LOGIN      0;6 DATE
+
+              INPUT TRANSFORM:  S %DT="ESTXR" D ^%DT S X=Y K:Y<1 X
+              LAST EDITED:      FEB 21, 2008 
+              HELP-PROMPT:      Login date/time of last entry into GUI Cross Walk. 
+              DESCRIPTION:
+                                Login date/time of last entry into GUI Cross Walk.  
+
+              TECHNICAL DESCR:
+                                Login date/time of last entry into GUI Cross Walk.  
+
+
+612418.5,7.8  LAST X-WALK USER       0;7 POINTER TO NEW PERSON FILE (#200)
+
+              LAST EDITED:      FEB 25, 2008 
+              HELP-PROMPT:      DUZ of person last logging into Cross Walk. 
+              DESCRIPTION:
+                                DUZ of person last logging into Cross Walk.  
+
+              TECHNICAL DESCR:
+                                DUZ of person last logging into Cross Walk.  
+
+
+612418.5,7.9  REGION #               0;8 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>4)!(X<1)!(X?.E1"."1N.N) X
+              LAST EDITED:      FEB 25, 2008 
+              HELP-PROMPT:      Type in the OI&T Region where the VA resides 
+              DESCRIPTION:
+                                Type in which RDP Region you reside in: Region 1 - Far West Region 2 - Far East Region 3 Region 4 
+
+              TECHNICAL DESCR:
+                                Type in which RDP Region you reside in: Region 1 - Far West Region 2 - Far East Region 3 Region 4 
+
+
+612418.5,8    MC DIV OVER-RIDE RETURN ADDRS 3;0 POINTER Multiple #612418.58
+
+              DESCRIPTION:
+                                Pointer to INSTITUTION file to over-ride return address on post card.  
+
+              TECHNICAL DESCR:
+                                Pointer to INSTITUTION file to over-ride return address on post card.  
+
+
+612418.58,.01   MC DIV OVER-RIDE RETURN ADDRS 0;1 POINTER TO INSTITUTION FILE (#4) (Multiply asked)
+
+                LAST EDITED:      JUN 15, 2007 
+                HELP-PROMPT:      Pointer to Institution File for Return Address Over-ride 
+                DESCRIPTION:
+                                  Pointer to INSTITUTION file to over-ride return address on post card.  
+
+                TECHNICAL DESCR:
+                                  Pointer to INSTITUTION file to over-ride return address on post card.  
+
+                CROSS-REFERENCE:  612418.58^B 
+                                  1)= S ^DIZ(612418.5,DA(1),3,"B",$E(X,1,30),DA)=""
+                                  2)= K ^DIZ(612418.5,DA(1),3,"B",$E(X,1,30),DA)
+
+
+612418.58,1     REPLACEMENT NAME-MED CENTR DIV 0;2 FREE TEXT
+
+                INPUT TRANSFORM:  K:$L(X)>40!($L(X)<10) X
+                LAST EDITED:      JUN 15, 2007 
+                HELP-PROMPT:      Enter free text to display on the post card return address 
+                DESCRIPTION:
+                                  Enter free text to display on the post card return address.  
+
+                TECHNICAL DESCR:
+                                  Enter free text to display on the post card return address.  
+
+
+612418.58,2     REPLACEMENT-1ST LINE ADDRS 0;3 FREE TEXT
+
+                INPUT TRANSFORM:  K:$L(X)>40!($L(X)<10) X
+                LAST EDITED:      JUN 15, 2007 
+                HELP-PROMPT:      Enter freee text for the 1st line of the over-ride return address 
+                DESCRIPTION:
+                                  Enter free text for the first address line of the over-ride address on the post card.  
+
+                TECHNICAL DESCR:
+                                  Enter free text for the first address line of the over-ride address on the post card.  
+
+
+612418.58,3     REPLACEMENT-CITY, STATE ZIP 0;4 FREE TEXT
+
+                INPUT TRANSFORM:  K:$L(X)>40!($L(X)<10) X
+                LAST EDITED:      JUN 15, 2007 
+                HELP-PROMPT:      Enter free text for City, State & Zip in the Over-rider Return Address 
+                DESCRIPTION:
+                                  Enter free text for the City, State & Zip line of the over-ride return address.  
+
+                TECHNICAL DESCR:
+                                  Enter free text for the City, State & Zip line of the over-ride return address.  
+
+
+
+
+612418.5,9    TRANSMISSION MODE      0;9 SET
+
+                                'F' FOR FTP; 
+                                'S' FOR SFTP; 
+              LAST EDITED:      AUG 12, 2008 
+              HELP-PROMPT:      Enter 'f' for 'ftp' or 's' for 'sftp' 
+              DESCRIPTION:
+                                Enter 'f' for 'ftp' or 's' for 'sftp' Code branches appropriately to handle either.  
+
+              TECHNICAL DESCR:
+                                Enter 'f' for 'ftp' or 's' for 'sftp' Code branches appropriately to handle either.  
+
+
+612418.5,10   LAB CLINIC DEFAULT FOR STATION 0;10 POINTER TO HOSPITAL LOCATION FILE (#44)
+
+              LAST EDITED:      JUL 10, 2009 
+              HELP-PROMPT:      Pointer to Lab Clinic Default for Station in #44. 
+              DESCRIPTION:
+                                Pointer to Lab Clinic Default for Station in #44.  Stuffs Clinic Name into CLINIC field in: #612418.3  IRMS XEROX POSTCARD TRACKING 
+
+              TECHNICAL DESCR:
+                                Pointer to Lab Clinic Default for Station in #44.  Stuffs Clinic Name into CLINIC field in: #612418.3  IRMS XEROX POSTCARD TRACKING 
+
+
+612418.5,11   PATIENT NOTIFICATION MAX LINES 0;11 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>999)!(X<1)!(X?.E1"."1N.N) X
+              LAST EDITED:      SEP 10, 2009 
+              HELP-PROMPT:      Max # lines that can be handled when printing Pt Notification PCards 
+              DESCRIPTION:
+                                Maximum lines that can be handled for printing PATIENT NOTIFICATION on paper stock at RRC.  
+
+              TECHNICAL DESCR:
+                                Maximum lines that can be handled for printing PATIENT NOTIFICATION on paper stock at RRC.  
+
+
+612418.5,12.1 VIPP SERVER            2;10 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<7) X
+              LAST EDITED:      APR 21, 2011 
+              HELP-PROMPT:      Answer must be 7-30 characters in length. 
+              DESCRIPTION:
+                                Enter the host name or IP address of the VIPP server.  
+
+
+612418.5,12.2 VIPP USER              2;11 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>20!($L(X)<3) X
+              LAST EDITED:      APR 21, 2011 
+              HELP-PROMPT:      Answer must be 3-20 characters in length. 
+              DESCRIPTION:
+                                Enter the username to log into the the VIPP server.  
+
+
+612418.5,12.3 VIPP PASSWORD          2;12 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>30!($L(X)<2) X S:$D(X)#2>0 X=$$ENCRYP^XUSRB1(X)
+              LAST EDITED:      APR 21, 2011 
+              HELP-PROMPT:      Answer must be 2-30 characters in length. 
+              DESCRIPTION:
+                                Enter the password to log into the the VIPP server.  
+
+              NOTES:            XXXX--CAN'T BE ALTERED EXCEPT BY PROGRAMMER
+
+
+612418.5,13   CLONE CLINIC SKIP FIELDS 1;1 FREE TEXT
+
+              INPUT TRANSFORM:  S X=$$UP^XLFSTR(X) K:$L(X)>20!($L(X)<1) X
+              LAST EDITED:      JUN 07, 2011 
+              HELP-PROMPT:      Answer must be 1-20 characters in length. 
+              DESCRIPTION:      This field contains the fields that should not have their values copied over when a clinic is cloned. The list should be a string  of letters, e.g., "DEFG".  
+                                 
+                                 A - Mail stop 
+                                 B - Clinic override cancel phone 
+                                 C - Clinic override make appt phone 
+                                 D - Friendly name 
+                                 E - Physical Location 1 
+                                 F - Physical Location 2 
+                                 G - Physical Location 3 
+                                 H - Inactivation reason 
+                                 I - Street address 
+                                 J - City, State Zip 
+                                 K - Template 
+
+              NOTES:            XXXX--CAN'T BE ALTERED EXCEPT BY PROGRAMMER
+
+
+612418.5,14.1 COLUMNS BEFORE PATIENT ADDRESS 2;13 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>99)!(X<0)!(X?.E1"."1.N) X
+              LAST EDITED:      JUL 12, 2011 
+              HELP-PROMPT:      Type a number between 0 and 99, 0 decimal digits. 
+              DESCRIPTION:
+                                This field contains the number of colums that the patient address should be pushed to the right.  This value is only used for locally printed patient notification letters.  
+
+
+612418.5,14.2 ROWS BEFORE PATIENT ADDRESS 2;14 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>99)!(X<0)!(X?.E1"."1.N) X
+              LAST EDITED:      JUL 12, 2011 
+              HELP-PROMPT:      Type a number between 0 and 99, 0 decimal digits. 
+              DESCRIPTION:
+                                This field contains the number of rows printed before the patient address.  This value is only used for locally printed patient notification letters.  
+
+
+612418.5,14.3 ROWS AFTER PATIENT ADDRESS 2;15 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>99)!(X<0)!(X?.E1"."1.N) X
+              LAST EDITED:      JUL 12, 2011 
+              HELP-PROMPT:      Type a number between 0 and 99, 0 decimal digits. 
+              DESCRIPTION:
+                                This field contains the number of rows printed after the patient address.  This value is only used for locally printed patient notification letters.  
+
+
+612418.5,15   DEFAULT PT NOTIF LETTER DEVICE 2;16 POINTER TO DEVICE FILE (#3.5)
+
+              LAST EDITED:      JUL 13, 2011 
+              HELP-PROMPT:      Enter a default device for the Pt Notification Letters. 
+              DESCRIPTION:
+                                This field holds the default device the patient notification letters will print to.  This device is used if the letter line count exceeds the threshold and there is no device specified in the TIU Document Parameters file.  
+
+
+612418.5,15.1 PT NOTIF LINE # ENABLE/DISABLE 7;1 SET
+
+                                '0' FOR DISABLE; 
+                                '1' FOR ENABLE; 
+              LAST EDITED:      JUL 13, 2011 
+              HELP-PROMPT:      Enter Yes to enable line count checking, otherwise enter No. 
+              DESCRIPTION:
+                                This field enables/disables the maximum line count checking of the patient notification letters when an attempt is made to sign the note in CPRS.  
+
+
+612418.5,15.2 PT NOTIF REMOTE ENABLE/DISABLE 7;2 SET
+
+                                '0' FOR DISABLE; 
+                                '1' FOR ENABLE; 
+              LAST EDITED:      JUL 14, 2011 
+              HELP-PROMPT:      Enter 0 to disable remote printing otherwise enter 1. 
+              DESCRIPTION:
+                                This field enables/disables the remote printing feature of the Patient Notification Letter package.  
+
+
+612418.5,25   TELEHEALTH PHONE #     0;12 FREE TEXT
+
+              INPUT TRANSFORM:  K:$L(X)>20!($L(X)<3) X
+              LAST EDITED:      JUN 04, 2010 
+              HELP-PROMPT:      Answer must be 3-20 characters in length. 
+              DESCRIPTION:
+                                Type in the phone number for the station/visn telephone care number which will be displayed on the bottom of the PATIENT NOTIFICATION LETTERS.  
+
+
+612418.5,26   CONTACT PHONE #        4;0 Multiple #612418.526
+
+
+612418.526,.01  CONTACT CLINIC GRP     0;1 FREE TEXT (Multiply asked)
+
+                INPUT TRANSFORM:  K:$L(X)>30!($L(X)<1) X
+                LAST EDITED:      JUN 11, 2010 
+                HELP-PROMPT:      Answer must be 1-30 characters in length. 
+                DESCRIPTION:
+                                  Add clinic grouping here.  
+
+                TECHNICAL DESCR:
+                                  Add Clinic Grouping here.  
+
+                CROSS-REFERENCE:  612418.526^B 
+                                  1)= S ^DIZ(612418.5,DA(1),4,"B",$E(X,1,30),DA)=""
+                                  2)= K ^DIZ(612418.5,DA(1),4,"B",$E(X,1,30),DA)
+
+
+612418.526,1    CONTACT PHONE #        0;2 FREE TEXT
+
+                INPUT TRANSFORM:  K:$L(X)>20!($L(X)<3) X
+                LAST EDITED:      JUN 11, 2010 
+                HELP-PROMPT:      Answer must be 3-20 characters in length. 
+                DESCRIPTION:
+                                  Add contact clinic grouping phone number here.  
+
+                TECHNICAL DESCR:
+                                  Add contact clinic grouping phone number here.  
+
+
+
+
+612418.5,27   PATIENT NOTIFICATION TITLE 5;0 POINTER Multiple #612418.527
+
+
+612418.527,.01  PATIENT NOTIFICATION TITLE 0;1 POINTER TO TIU DOCUMENT DEFINITION FILE (#8925.1) (Multiply asked)
+
+                INPUT TRANSFORM:  S DIC("S")="I $P(^(0),U,4)=""DOC""" D ^DIC K DIC S DIC=$G(DIE),X=+Y K:Y<0 X S:$D(X)#2>0 DINUM=X
+                LAST EDITED:      APR 05, 2011 
+                HELP-PROMPT:      Enter a patient notification letter note title. 
+                DESCRIPTION:
+                                  This field contains the note titles used as patient notification letters.  
+
+                SCREEN:           S DIC("S")="I $P(^(0),U,4)=""DOC"""
+                EXPLANATION:      Only note titles are selectable.
+                NOTES:            XXXX--CAN'T BE ALTERED EXCEPT BY PROGRAMMER
+
+                CROSS-REFERENCE:  612418.527^B 
+                                  1)= S ^DIZ(612418.5,DA(1),5,"B",$E(X,1,30),DA)=""
+                                  2)= K ^DIZ(612418.5,DA(1),5,"B",$E(X,1,30),DA)
+
+
+
+
+612418.5,28   UNIVERSAL BOX TEXT     6;0   WORD-PROCESSING #612418.528   (IGNORE "|")
+
+
+
+      FILES POINTED TO                      FIELDS
+
+DEVICE (#3.5)                     DEFAULT PT NOTIF LETTER DEVICE (#15)
+
+HOSPITAL LOCATION (#44)           LAB CLINIC DEFAULT FOR STATION (#10)
+
+INSTITUTION (#4)                  NAME (#.01)
+                                  MC DIV OVER-RIDE RETURN ADDRS:MC DIV OVER-RIDE RETURN ADDRS (#.01)
+
+MAIL GROUP (#3.8)                 XEROX POSTCARD MAIL GROUP (#.05)
+
+NEW PERSON (#200)                 LAST X-WALK USER (#7.8)
+
+TIU DOCUMENT DEFINITION (#8925.1)  PATIENT NOTIFICATION TITLE:PATIENT NOTIFICATION TITLE (#.01)
+
+
+
+INPUT TEMPLATE(S):
+R1AC SITE PARAM EDIT          NOV 04, 2009@09:26  USER #0    
+
+PRINT TEMPLATE(S):
+
+SORT TEMPLATE(S):
+
+FORM(S)/BLOCK(S):
+
+
+Select DATA DICTIONARY UTILITY OPTION: 
+
+
+
+
+Select OPTION: 
+VISTA>HALT

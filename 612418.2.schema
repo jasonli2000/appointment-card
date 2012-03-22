@@ -1,0 +1,106 @@
+znspace "VISTA"
+
+VISTA>S DUZ=96218 D Q^DIS DUZ=96218 D Q^DI
+
+
+VA FileMan 22.0
+
+
+Select OPTION: 88  DATA DICTIONARY UTILITIES
+Select DATA DICTIONARY UTILITY OPTION: 11  LIST FILE ATTRIBUTES
+ START WITH WHAT FILE: 612418.2612418.2  R1AC POSTCARD FTP  (0 entries)
+      GO TO WHAT FILE: R1AC POSTCARD FTP// 612418.2612418.2  R1AC POSTCARD FTP
+                                          (0 entries)
+Select LISTING FORMAT: STANDARD// 11  STANDARD
+Start with field: FIRST// 
+DEVICE: HOME;387;9999HOME;387;9999  TELNET
+STANDARD DATA DICTIONARY #612418.2 -- R1AC POSTCARD FTP FILE                                                                                                                                                                      MAR 22,2012@15:20:19  PAGE 1
+STORED IN ^DIZ(612418.2,  *** NO DATA STORED YET ***   SITE: PLA.ISC-WASH.MED.VA.GOV   UCI: VISTA,FOI                                                                                                                                                         
+
+DATA          NAME                  GLOBAL        DATA
+ELEMENT       TITLE                 LOCATION      TYPE
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+File containing the last XXX number of days ftp transmission.  The XXX number of days is setup in field TRANSMISSION DATA RETENTION in #612418.5 (IRMS XEROX POSTCARD PARAMETERS).  
+
+
+              DD ACCESS: @
+           AUDIT ACCESS: @
+
+CROSS
+REFERENCED BY: FILE TO FTP(ATX), FILE TO FTP(B)
+
+612418.2,.01  FILE TO FTP            0;1 FREE TEXT (Required)
+
+              INPUT TRANSFORM:  K:$L(X)>50!($L(X)<10)!'(X'?1P.E) X
+              LAST EDITED:      APR 09, 2007 
+              HELP-PROMPT:      Answer must be 10-50 characters in length. 
+              DESCRIPTION:      Name of file to ftp consisting of the following parts: 
+                                 
+                                station#_"VIPP"_$H_number."INPUT" 
+
+              TECHNICAL DESCR:  Name of file to ftp consisting of the following parts: 
+                                 
+                                station#_"VIPP"_$H_number."INPUT" 
+
+              CROSS-REFERENCE:  612418.2^B 
+                                1)= S ^DIZ(612418.2,"B",$E(X,1,30),DA)=""
+                                2)= K ^DIZ(612418.2,"B",$E(X,1,30),DA)
+
+              CROSS-REFERENCE:  612418.2^ATX 
+                                1)= S ^DIZ(612418.2,"ATX",$E(X,1,30),DA)=""
+                                2)= K ^DIZ(612418.2,"ATX",$E(X,1,30),DA)
+
+
+612418.2,2    TIME SUBMITTED         0;3 DATE
+
+              INPUT TRANSFORM:  S %DT="ET" D ^%DT S X=Y K:Y<1 X
+              LAST EDITED:      APR 09, 2007 
+              HELP-PROMPT:      Date/Time file was submitted for ftp. 
+              DESCRIPTION:
+                                Date/Time file was submitted for ftp.  
+
+              TECHNICAL DESCR:
+                                Date/Time file was submitted for ftp.  
+
+
+612418.2,3    TIME TRANSMITTED       0;4 DATE
+
+              INPUT TRANSFORM:  S %DT="ET" D ^%DT S X=Y K:Y<1 X
+              LAST EDITED:      APR 09, 2007 
+              HELP-PROMPT:      (No range limit on date) 
+              DESCRIPTION:
+                                Date/Time file was actually ftp'd to the RRC.  
+
+              TECHNICAL DESCR:
+                                Date/Time file was actually ftp'd to the RRC.  
+
+
+612418.2,4    NUMBER OF ATTEMPTS TO XMIT 0;5 NUMBER
+
+              INPUT TRANSFORM:  K:+X'=X!(X>99)!(X<0)!(X?.E1"."1N.N) X
+              LAST EDITED:      APR 09, 2007 
+              HELP-PROMPT:      Type a Number between 0 and 99, 0 Decimal Digits 
+              DESCRIPTION:
+                                Number of Attempts the file was transmitted.  
+
+              TECHNICAL DESCR:
+                                Number of Attempts the file was transmitted.  
+
+
+
+INPUT TEMPLATE(S):
+
+PRINT TEMPLATE(S):
+
+SORT TEMPLATE(S):
+
+FORM(S)/BLOCK(S):
+
+
+Select DATA DICTIONARY UTILITY OPTION: 
+
+
+
+
+Select OPTION: 
+VISTA>HALT
